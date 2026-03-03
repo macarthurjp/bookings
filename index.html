@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>JessMakeUP & Nails — Booking</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    padding: 20px;
+    margin: 0;
+  }
+
+  .container {
+    max-width: 420px;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+
+  h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+
+  input, select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+
+  .services-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+
+  .services-container label {
+    font-weight: normal;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .slot {
+    padding: 8px 14px;
+    font-size: 14px;
+    border-radius: 50px;
+    border: 1px solid #ccc;
+    background: #fff;
+    display: inline-block;
+    margin: 6px 6px 0 0;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+  }
+
+  .slot:hover {
+    background: #f0f0f0;
+  }
+
+  .slot.selected {
+    background: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+    transform: scale(1.06);
+  }
+
+  .slot.selected-2h {
+    background: #2E7D32;
+    color: white;
+    border-color: #2E7D32;
+    transform: scale(1.06);
+  }
+
+  .slot-final {
+    background: #e0e0e0;
+    color: #555;
+    border-color: #ccc;
+    cursor: not-allowed;
+    transform: scale(1.06);
+  }
+
+  #timeslots {
+    margin-top: 15px;
+  }
+
+  button {
+    margin-top: 20px;
+    padding: 14px;
+    width: 100%;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 17px;
+  }
+
+  button:hover {
+    background: #333;
+  }
+
+  .time-display {
+    margin-top: 15px;
+    padding: 12px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  #twoHourNotice {
+    display:none;
+    margin-top:10px;
+    padding:10px;
+    background:#fff3cd;
+    border:1px solid #ffeeba;
+    border-radius:8px;
+    color:#856404;
+    font-size:14px;
+  }
+
+  #successPopup {
+    display:none;
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.45);
+    backdrop-filter: blur(4px);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  }
+
+  #successPopup .popup-box {
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    width:80%;
+    max-width:350px;
+    text-align:center;
+    animation: popupFade 0.35s ease;
+  }
+
+  @keyframes popupFade {
+    from { opacity:0; transform:scale(0.8); }
+    to { opacity:1; transform:scale(1); }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>Book Your Appointment</h2>
+
+  <form id="bookingForm">
+
+    <label>Full name</label>
+    <input type="text" name="name" required />
+
+    <label>Email</label>
+    <input type="email" name="email" required />
+
+    <label>Phone number</label>
+    <input type="text" name="phone" required />
+
+    <label>Service</label>
+    <div class="services-container">
+      <label><input type="checkbox" value="Gel Manicure" /> Gel Manicure</label>
+      <label><input type="checkbox" value="Pedicure" /> Pedicure</label>
+      <label><input type="checkbox" value="Lash Lifting" /> Lash Lifting</label>
+      <label><input type="checkbox" value="Brows" /> Brows</label>
+    </div>
+
+    <div id="twoHourNotice">
+      Este servicio requiere 2 horas. Selecciona dos horarios consecutivos.
+    </div>
+
+    <label>Date</label>
+    <input type="date" name="date" id="dateInput" required />
+
+    <input type="hidden" name="services" id="servicesInput" />
+    <input type="hidden" name="startTime" id="startTimeInput" />
+    <input type="hidden" name="endTime" id="endTimeInput" />
+
+    <div id="timeslots"></div>
+
+    <div id="selectedTimes" class="time-display" style="display:none;">
+      <strong>Selected time:</strong>
+      <div>Start: <span id="startTimeLabel"></span></div>
+      <div>End: <span id="endTimeLabel"></span></div>
+    </div>
+
+    <button type="submit">Request appointment</button>
+  </form>
+
+</div>
+
+<div id="successPopup">
+  <div class="popup-box">
+    <h3 style="margin-top:0; font-size:20px;">✨ Appointment Received</h3>
+
+    <p style="font-size:15px; color:#444;">
+      Your appointment request has been received successfully.
+    </p>
+
+    <div id="popupSummary" style="
+      text-align:left;
+      margin-top:15px;
+      padding:12px;
+      background:#f7f7f7;
+      border-radius:8px;
+      font-size:14px;
+      color:#333;
+    "></div>
+
+    <button onclick="closeSuccessPopup()" style="
+      margin-top:15px;
+      padding:12px 20px;
+      background:black;
+      color:white;
+      border:none;
+      border-radius:8px;
+      cursor:pointer;
+      font-size:15px;
+      width:100%;
+    ">OK</button>
+  </div>
+</div>
+
+<script>
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzrWAAy26Kr4L428hrzrOaoCUtQiSxiKmxcgJah9VlLQuqu2BY7hSjAgdPstMyL58D3Ow/exec";
+
+  function showSuccessPopup() {
+    document.getElementById("successPopup").style.display = "flex";
+  }
+
+  function closeSuccessPopup() {
+    document.getElementById("successPopup").style.display = "none";
+  }
+
+  function fillPopupSummary(name, services, date, start, end) {
+    document.getElementById("popupSummary").innerHTML = `
+      <strong>Name:</strong> ${name}<br>
+      <strong>Services:</strong> ${services}<br>
+      <strong>Date:</strong> ${date}<br>
+      <strong>Start:</strong> ${start}<br>
+      <strong>End:</strong> ${end}
+    `;
+  }
+
+  function getSelectedServices() {
+    return [...document.querySelectorAll('input[type="checkbox"]:checked')].map(s => s.value);
+  }
+
+  [...document.querySelectorAll('input[type="checkbox"]')].forEach(cb => {
+    cb.addEventListener("change", () => {
+      const selected = getSelectedServices();
+      document.getElementById("twoHourNotice").style.display =
+        selected.length >= 2 ? "block" : "none";
+    });
+  });
+
+  const dateInput = document.getElementById("dateInput");
+  const timeslotsDiv = document.getElementById("timeslots");
+  const startTimeInput = document.getElementById("startTimeInput");
+  const endTimeInput = document.getElementById("endTimeInput");
+  const selectedTimesBox = document.getElementById("selectedTimes");
+  const startTimeLabel = document.getElementById("startTimeLabel");
+  const endTimeLabel = document.getElementById("endTimeLabel");
+  const servicesInput = document.getElementById("servicesInput");
+
+  dateInput.addEventListener("change", loadTimes);
+
+  async function loadTimes() {
+    timeslotsDiv.innerHTML = "Loading...";
+    startTimeInput.value = "";
+    endTimeInput.value = "";
+    selectedTimesBox.style.display = "none";
+
+    const date = dateInput.value;
+    if (!date) return;
+
+    const res = await fetch(`${WEB_APP_URL}?action=availability&date=${date}`);
+    const data = await res.json();
+
+    if (!data.available || data.available.length === 0) {
+      timeslotsDiv.innerHTML = "No available times.";
+      return;
+    }
+
+    timeslotsDiv.innerHTML = "";
+    data.available.forEach(time => {
+      const div = document.createElement("div");
+      div.className = "slot";
+      div.textContent = time;
+
+      div.onclick = () => handleSlotSelection(div, time, data.available);
+
+      timeslotsDiv.appendChild(div);
+    });
+  }
+
+  function handleSlotSelection(div, time, allSlots) {
+    const services = getSelectedServices();
+    const duration = services.length <= 1 ? 1 : 2;
+
+    document.querySelectorAll(".slot").forEach(s => {
+      s.classList.remove("selected", "selected-2h", "slot-final");
+      s.style.transform = "scale(1)";
+    });
+
+    div.classList.add("selected");
+    startTimeInput.value = time;
+
+    if (duration === 1) {
+      endTimeInput.value = "";
+      selectedTimesBox.style.display = "block";
+      startTimeLabel.textContent = time;
+      endTimeLabel.textContent = "N/A";
+      return;
+    }
+
+    const index = allSlots.indexOf(time);
+    const middleSlot = allSlots[index + 1];
+    const finalSlot = allSlots[index + 2];
+
+    if (!middleSlot || !finalSlot) {
+      alert("Este servicio requiere 2 horas completas, pero no hay suficiente disponibilidad.");
+      div.classList.remove("selected");
+      startTimeInput.value = "";
+      return;
+    }
+
+    const middleDiv = [...document.querySelectorAll(".slot")].find(s => s.textContent === middleSlot);
+    middleDiv.classList.add("selected-2h");
+
+    const finalDiv = [...document.querySelectorAll(".slot")].find(s => s.textContent === finalSlot);
+    finalDiv.classList.add("slot-final");
+
+    startTimeInput.value = time;
+    endTimeInput.value = finalSlot;
+
+    selectedTimesBox.style.display = "block";
+    startTimeLabel.textContent = time;
+    endTimeLabel.textContent = finalSlot;
+  }
+
+  document.getElementById("bookingForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const services = getSelectedServices();
+    servicesInput.value = services.join(", ");
+
+    if (!startTimeInput.value) {
+      alert("Selecciona un horario válido.");
+      return;
+    }
+
+    const formData = new FormData(e.target);
+
+    const res = await fetch(WEB_APP_URL, {
+      method: "POST",
+      body: new URLSearchParams([...formData])
+    });
+
+    const data = await res.json();
+
+    if (data.status === "ok") {
+      fillPopupSummary(
+        document.querySelector("input[name='name']").value,
+        servicesInput.value,
+        dateInput.value,
+        startTimeInput.value,
+        endTimeInput.value || "N/A"
+      );
+
+      showSuccessPopup();
+      e.target.reset();
+      timeslotsDiv.innerHTML = "";
+      selectedTimesBox.style.display = "none";
+      document.getElementById("twoHourNotice").style.display = "none";
+    } else {
+      alert("Error submitting form.");
+    }
+  });
+</script>
+
+</body>
+</html>
