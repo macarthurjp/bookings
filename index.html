@@ -1,1096 +1,822 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Book Your Appointment</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Book Your Appointment</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<style>
-/* ———— VARIABLES ———— */
-:root {
-  --bg: #FAF8F5;
-  --card-bg: #FFFFFF;
-  --primary: #A67C52;
-  --primary-soft: #E8D9C9;
-  --primary-glow: rgba(166, 124, 82, 0.55);
-  --border: #E0DAD3;
-  --text-main: #3A3A3A;
-  --text-muted: #8A8A8A;
-}
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --card-bg: #ffffff;
+      --primary: #a67c52;
+      --border: #e0dad3;
+      --text-main: #3a3a3a;
+      --text-muted: #8a8a8a;
+      --blue-soft: #f4f8ff;
+      --blue-border: #d9e7ff;
+      --blue-strong: #0d6efd;
+    }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { overflow-x: hidden; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--bg);
-  color: var(--text-main);
-  display: flex;
-  min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
-}
+    html, body {
+      width: 100%;
+      min-height: 100%;
+    }
 
-.page { width:100%; max-width:520px; margin:0 auto; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-/* ———— HEADER ———— */
-.header { text-align:center; margin-bottom:24px; }
+    .page {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
+      flex: 1;
+    }
 
-.logo {
-  font-family:'Playfair Display', serif;
-  font-size:24px;
-  letter-spacing:0.08em;
-  text-transform:uppercase;
-  color:var(--primary);
-  margin-bottom:8px;
-}
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
-.title {
-  font-family:'Playfair Display', serif;
-  font-size:26px;
-  margin-bottom:4px;
-}
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
 
-.subtitle {
-  font-size:14px;
-  color:var(--text-muted);
-  letter-spacing:0.12em;
-  text-transform:uppercase;
-}
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      margin-bottom: 4px;
+    }
 
-.divider {
-  width:60px;
-  height:2px;
-  background:var(--primary);
-  margin:14px auto 0;
-  border-radius:2px;
-}
+    .subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
 
-/* ———— CARD ———— */
-.card {
-  background:var(--card-bg);
-  border-radius:16px;
-  padding:20px 18px;
-  box-shadow:0 18px 40px rgba(0,0,0,0.06);
-}
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: var(--primary);
+      margin: 14px auto 0;
+      border-radius: 2px;
+    }
 
-.form-group { margin-bottom:14px; }
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px 18px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.06);
+      max-width: 540px;
+      margin: 0 auto;
+    }
 
-label { display:block; font-size:13px; margin-bottom:6px; }
+    .form-group {
+      margin-bottom: 16px;
+      width: 100%;
+    }
 
-input, select {
-  width:100%;
-  padding:10px 12px;
-  border-radius:12px;
-  border:1px solid var(--border);
-  background:#fff;
-  transition:0.15s;
-  font-size:16px;
-}
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 600;
+    }
 
-input:focus, select:focus {
-  border-color:var(--primary);
-  box-shadow:0 0 0 2px rgba(166,124,82,0.12);
-  outline:none;
-}
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #d6d6d6;
+      border-radius: 10px;
+      background: #fff;
+      font-size: 16px;
+      transition: 0.15s;
+    }
 
-.helper { font-size:12px; color:var(--text-muted); margin-top:4px; }
+    input:focus,
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(166, 124, 82, 0.12);
+      outline: none;
+    }
 
-/* ———— SERVICES ———— */
-.services-container label {
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:14px;
-  margin-bottom:6px;
-}
+    .phone-input-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-.services-container input[type="checkbox"]{
-  width:18px;
-  height:18px;
-  accent-color:var(--primary);
-}
+    .phone-prefix {
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid #d6d6d6;
+      border-radius: 10px;
+      background: #f3f3f3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
 
-/* ———— BUTTON ———— */
-.btn-submit{
-  width:100%;
-  margin-top:16px;
-  padding:12px;
-  border-radius:12px;
-  border:none;
-  background:var(--primary);
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-  transition:all .2s ease;
-}
+    .phone-input-group input {
+      flex: 1;
+    }
 
-.btn-submit:hover{
-  background:#8E6844;
-  box-shadow:0 6px 18px rgba(166,124,82,0.35);
-}
+    .field-help {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #666;
+    }
 
-/* ———— FOOTER ———— */
-.footer-divider{
-  width:100%;
-  height:1px;
-  background:var(--border);
-  margin:26px 0 18px;
-  opacity:0.6;
-}
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
 
-.footer, .footer-brand{
-  text-align:center;
-  font-size:11px;
-  color:var(--text-muted);
-  opacity:0.7;
-}
+    .service-card {
+      position: relative;
+    }
 
-/* ———— POPUP ———— */
-#successPopup{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.35);
-  backdrop-filter:blur(6px);
-  align-items:center;
-  justify-content:center;
-  z-index:1000;
-  padding:20px;
-}
+    .service-card input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
 
-.popup-box{
-  background:#fff;
-  width:100%;
-  max-width:420px;
-  border-radius:20px;
-  padding:32px 26px;
-  text-align:center;
-}
+    .service-card label {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 4px;
+      min-height: 68px;
+      padding: 14px;
+      border: 1px solid #d6d6d6;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
 
-.popup-title{
-  font-family:'Playfair Display', serif;
-  font-size:24px;
-  color:var(--primary);
-  margin-bottom:14px;
-}
+    .service-card label:hover {
+      border-color: var(--blue-strong);
+    }
 
-.popup-text{
-  font-size:14px;
-  margin-bottom:18px;
-  color:var(--text-muted);
-}
+    .service-card input[type="checkbox"]:checked + label {
+      border-color: var(--blue-strong);
+      background: #eaf2ff;
+    }
 
-.popup-btn{
-  width:100%;
-  padding:13px;
-  border:none;
-  border-radius:14px;
-  background:var(--primary);
-  color:#fff;
-  font-weight:600;
-  cursor:pointer;
-}
-.time-buttons-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 5px;
-}
+    .service-name {
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: #222;
+    }
 
-.time-btn {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  background-color: #f7f7f7;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-}
+    .service-minutes {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.2;
+    }
 
-.time-btn.selected {
-  background-color: #4CAF50;
-  color: white;
-  border-color: #4CAF50;
-}
-.form-group {
-  margin-bottom: 16px;
-}
+    .selected-staff-info {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--blue-border);
+      background: var(--blue-soft);
+      border-radius: 10px;
+      font-size: 14px;
+      color: #234;
+      display: none;
+    }
 
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-}
+    #time-buttons {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      width: 100%;
+    }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="date"],
-.form-group input[type="tel"] {
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 14px;
-  border: 1px solid #d6d6d6;
-  border-radius: 10px;
-  box-sizing: border-box;
-  font-size: 16px;
-}
+    #time-buttons .time-btn {
+      width: 100%;
+      min-height: 56px;
+      padding: 12px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      white-space: nowrap;
+      border: 1px solid #cfcfcf;
+      border-radius: 8px;
+      background: #fff;
+      font-size: 16px;
+      line-height: 1.2;
+      cursor: pointer;
+    }
 
-.phone-input-group {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
+    #time-buttons .time-btn.selected {
+      border-color: var(--blue-strong);
+      background: #eaf2ff;
+    }
 
-.phone-prefix {
-  min-height: 48px;
-  padding: 12px 14px;
-  border: 1px solid #d6d6d6;
-  border-radius: 10px;
-  background: #f3f3f3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-  box-sizing: border-box;
-}
+    .btn-submit {
+      width: 100%;
+      margin-top: 16px;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
 
-.phone-input-group input {
-  flex: 1;
-}
+    .btn-submit:hover {
+      background: #8e6844;
+      box-shadow: 0 6px 18px rgba(166, 124, 82, 0.35);
+    }
 
-.field-help {
-  display: block;
-  margin-top: 6px;
-  font-size: 12px;
-  color: #666;
-}
+    #successPopup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 20px;
+    }
 
-/* SERVICES */
-.services-container {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  width: 100%;
-}
+    .popup-box {
+      background: #fff;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      padding: 32px 26px;
+      text-align: center;
+    }
 
-.service-card {
-  position: relative;
-}
+    .popup-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: var(--primary);
+      margin-bottom: 14px;
+    }
 
-.service-card input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
+    .popup-text {
+      font-size: 14px;
+      margin-bottom: 18px;
+      color: var(--text-muted);
+    }
 
-.service-card label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 4px;
-  min-height: 68px;
-  padding: 14px;
-  border: 1px solid #d6d6d6;
-  border-radius: 10px;
-  background: #fff;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-  width: 100%;
-}
+    .popup-btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 14px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+    }
 
-.service-card label:hover {
-  border-color: #0d6efd;
-}
+    .site-footer {
+      width: 100%;
+      text-align: center;
+      padding: 24px 16px;
+      margin-top: 40px;
+      border-top: 1px solid #e9e9e9;
+      background: #fafafa;
+    }
 
-.service-card input[type="checkbox"]:checked + label {
-  border-color: #0d6efd;
-  background: #eaf2ff;
-}
+    .site-footer p {
+      margin: 4px 0;
+    }
 
-.service-name {
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #222;
-}
+    .footer-credit {
+      font-size: 12px;
+      color: #888;
+    }
 
-.service-minutes {
-  font-size: 13px;
-  color: #666;
-  line-height: 1.2;
-}
+    .footer-credit a {
+      color: var(--blue-strong);
+      text-decoration: none;
+    }
 
-/* TIMES */
-#time-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  width: 100%;
-}
+    .footer-credit a:hover {
+      text-decoration: underline;
+    }
 
-#time-buttons .time-btn {
-  width: 100%;
-  min-height: 56px;
-  padding: 12px 10px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  white-space: nowrap;
-  border: 1px solid #cfcfcf;
-  border-radius: 8px;
-  background: #fff;
-  font-size: 16px;
-  line-height: 1.2;
-}
+    @media (max-width: 480px) {
+      .services-container {
+        grid-template-columns: 1fr;
+      }
 
-#time-buttons .time-btn.selected {
-  border-color: #0d6efd;
-  background: #eaf2ff;
-}
+      #time-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
 
-@media (max-width: 480px) {
-  .services-container {
-    grid-template-columns: 1fr;
-  }
+      #time-buttons .time-btn {
+        min-height: 52px;
+        font-size: 15px;
+        padding: 10px 8px;
+      }
+    }
 
-  #time-buttons {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-
-  #time-buttons .time-btn {
-    min-height: 52px;
-    font-size: 15px;
-    padding: 10px 8px;
-  }
-}
-
-@media (max-width: 360px) {
-  #time-buttons {
-    grid-template-columns: 1fr;
-  }
-}
-.selected-staff-info {
-  margin-top: 10px;
-  padding: 10px 12px;
-  border: 1px solid #d9e7ff;
-  background: #f4f8ff;
-  border-radius: 10px;
-  font-size: 14px;
-  color: #234;
-}
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.page {
-  width: 100%;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px 16px 40px;
-  box-sizing: border-box;
-  flex: 1;
-}
-
-.header {
-  text-align: center;
-  margin-bottom: 24px;
-}
-
-.card {
-  max-width: 540px;
-  margin: 0 auto;
-}
-
-.site-footer {
-  width: 100%;
-  text-align: center;
-  padding: 24px 16px;
-  margin-top: 40px;
-  border-top: 1px solid #e9e9e9;
-  background: #fafafa;
-  box-sizing: border-box;
-}
-
-.site-footer p {
-  margin: 4px 0;
-}
-
-.footer-credit {
-  font-size: 12px;
-  color: #888;
-}
-
-.footer-credit a {
-  color: #0d6efd;
-  text-decoration: none;
-}
-
-.footer-credit a:hover {
-  text-decoration: underline;
-}
-</style>
+    @media (max-width: 360px) {
+      #time-buttons {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="page">
+  <div class="page">
+    <div class="header">
+      <div class="logo">JESSMAKEUP & NAILS</div>
+      <div class="title">Book Your Appointment</div>
+      <div class="subtitle">MANICURE • PEDICURE • SELF-CARE</div>
+      <div class="divider"></div>
+    </div>
 
-  <div class="header">
-    <div class="logo">JESSMAKEUP & NAILS</div>
-    <div class="title">Book Your Appointment</div>
-    <div class="subtitle">MANICURE • PEDICURE • SELF-CARE</div>
-    <div class="divider"></div>
-  </div>
-
-  <div class="card">
-
-    <form id="bookingForm">
-
-      <!-- Full name -->
-      <div class="form-group">
-        <label for="name">Full name</label>
-        <input type="text" id="name" placeholder="Your name" required />
-      </div>
-
-      <!-- WhatsApp -->
-      <div class="form-group">
-        <label for="phone">WhatsApp number</label>
-
-        <div class="phone-input-group">
-          <span class="phone-prefix">+1</span>
-
-          <input
-            type="tel"
-            id="phone"
-            placeholder="5551234567"
-            pattern="[0-9]{10}"
-            maxlength="10"
-            inputmode="numeric"
-            required
-          />
+    <div class="card">
+      <form id="bookingForm">
+        <div class="form-group">
+          <label for="name">Full name</label>
+          <input type="text" id="name" placeholder="Your name" required />
         </div>
 
-        <small class="field-help">
-          Enter a valid 10-digit US number
-        </small>
-      </div>
-
-      <!-- Email -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="your@email.com" required />
-      </div>
-
-      <!-- SERVICES -->
-      <div class="form-group">
-
-        <label>Select service</label>
-
-        <div id="services-container" class="services-container"></div>
-
-        <!-- STAFF INFO -->
-        <div
-          id="selected-staff-info"
-          class="selected-staff-info"
-          style="display:none;">
+        <div class="form-group">
+          <label for="phone">WhatsApp number</label>
+          <div class="phone-input-group">
+            <span class="phone-prefix">+1</span>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="5551234567"
+              pattern="[0-9]{10}"
+              maxlength="10"
+              inputmode="numeric"
+              required
+            />
+          </div>
+          <small class="field-help">Enter a valid 10-digit US number</small>
         </div>
 
-      </div>
-
-      <!-- DATE -->
-      <div class="form-group">
-        <label for="date">Preferred date</label>
-        <input type="date" id="date" required />
-      </div>
-
-      <!-- TIME -->
-      <div class="form-group">
-
-        <label>Preferred time</label>
-
-        <div
-          id="time-buttons"
-          class="time-buttons-container">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
         </div>
 
-        <input type="hidden" id="time" required />
+        <div class="form-group">
+          <label>Select service</label>
+          <div id="services-container" class="services-container"></div>
+          <div id="selected-staff-info" class="selected-staff-info"></div>
+        </div>
 
-      </div>
+        <div class="form-group">
+          <label for="date">Preferred date</label>
+          <input type="date" id="date" required />
+        </div>
 
-      <!-- SUBMIT -->
-      <button
-        type="submit"
-        class="btn-submit">
+        <div class="form-group">
+          <label>Preferred time</label>
+          <div id="time-buttons"></div>
+          <input type="hidden" id="time" required />
+        </div>
 
-        Request appointment
-
-      </button>
-
-    </form>
-
+        <button type="submit" class="btn-submit">Request appointment</button>
+      </form>
+    </div>
   </div>
 
-</div>
-
-<!-- Popup -->
-<div id="successPopup" style="display:none;">
-  <div class="popup-box">
-    <div class="popup-title">✨ Appointment Received</div>
-    <div class="popup-text">Your appointment request has been received successfully.</div>
-    <button class="popup-btn" id="popupOkBtn">OK</button>
+  <div id="successPopup">
+    <div class="popup-box">
+      <div class="popup-title">✨ Appointment Received</div>
+      <div class="popup-text">Your appointment request has been received successfully.</div>
+      <button class="popup-btn" id="popupOkBtn">OK</button>
+    </div>
   </div>
-</div>
 
-<style>
-.time-buttons-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 5px;
-}
-.time-btn {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  background-color: #f7f7f7;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: 0.2s;
-}
-.time-btn:hover { background-color: #e0e0e0; }
-.time-btn.selected {
-  background-color: #4CAF50;
-  color: white;
-  border-color: #4CAF50;
-}
-#successPopup {
-  position: fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background: rgba(0,0,0,0.5);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  z-index:9999;
-}
-.popup-box {
-  background:#fff;
-  padding:20px;
-  border-radius:8px;
-  text-align:center;
-}
-/* CONTENEDOR DE HORARIOS */
-#time-buttons {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  width: 100%;
-}
+  <footer class="site-footer">
+    <p>© <span id="year"></span> JessMakeUP & Nails · All rights reserved</p>
+    <p class="footer-credit">
+      An official
+      <a href="https://arthurnolimit.com" target="_blank" rel="noopener noreferrer">ArthurNoLimit</a>
+      Product
+    </p>
+  </footer>
 
-/* BOTONES DE HORA */
-#time-buttons .time-btn {
-  width: 100%;
-  min-height: 56px;
-  padding: 12px 10px;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  white-space: nowrap;
-  border: 1px solid #cfcfcf;
-  border-radius: 8px;
-  background: #ffffff;
-  font-size: 16px;
-  line-height: 1.2;
-}
+  <script>
+    const API_BASE = "https://sheetdb.io/api/v1/vjwpuzqkosor4";
+    const BUSINESS_WHATSAPP = "1352621474116";
 
-/* BOTÓN SELECCIONADO */
-#time-buttons .time-btn.selected {
-  border-color: #0d6efd;
-  background: #eaf2ff;
-}
+    let SETTINGS = [];
+    let DURATIONS = [];
+    let CONFIG = [];
+    let HOLIDAYS = [];
 
-/* MOBILE NORMAL */
-@media (max-width: 480px) {
-  #time-buttons {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
+    const servicesContainer = document.getElementById("services-container");
+    const timeButtonsContainer = document.getElementById("time-buttons");
+    const timeInput = document.getElementById("time");
+    const dateInput = document.getElementById("date");
 
-  #time-buttons .time-btn {
-    min-height: 52px;
-    font-size: 15px;
-    padding: 10px 8px;
-  }
-}
+    document.addEventListener("DOMContentLoaded", async () => {
+      CONFIG = await fetch(`${API_BASE}?sheet=SettingsConfig`).then(r => r.json());
+      DURATIONS = await fetch(`${API_BASE}?sheet=Durations`).then(r => r.json());
+      SETTINGS = await fetch(`${API_BASE}?sheet=Settings`).then(r => r.json());
 
-/* PANTALLAS MUY PEQUEÑAS */
-@media (max-width: 360px) {
-  #time-buttons {
-    grid-template-columns: 1fr;
-  }
-}
+      if (CONFIG[0] && CONFIG[0].Holidays) {
+        HOLIDAYS = CONFIG[0].Holidays.split(",").map(d => d.trim());
+      }
 
-/* AJUSTE GENERAL DEL FORM */
-.form-group,
-#time-buttons {
-  width: 100%;
-}
+      renderServices();
+      blockUnavailableDates();
 
-#time-buttons .time-btn {
-  margin: 0;
-}
-.site-footer {
-  text-align: center;
-  padding: 30px 15px;
-  margin-top: 50px;
-  font-size: 14px;
-  color: #666;
-  border-top: 1px solid #e5e5e5;
-  background: #fafafa;
-}
-
-.site-footer p {
-  margin: 6px 0;
-}
-
-.footer-credit {
-  font-size: 12px;
-  color: #888;
-}
-
-.footer-credit a {
-  color: #0d6efd;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.footer-credit a:hover {
-  text-decoration: underline;
-}
-</style>
-
-<script>
-const API_BASE = "https://sheetdb.io/api/v1/vjwpuzqkosor4";
-
-let SETTINGS = [];
-let DURATIONS = [];
-let CONFIG = [];
-let HOLIDAYS = [];
-
-const servicesContainer = document.getElementById("services-container");
-const timeButtonsContainer = document.getElementById("time-buttons");
-const timeInput = document.getElementById("time");
-const dateInput = document.getElementById("date");
-
-// INIT
-document.addEventListener("DOMContentLoaded", async () => {
-  CONFIG = await fetch(`${API_BASE}?sheet=SettingsConfig`).then(r => r.json());
-  DURATIONS = await fetch(`${API_BASE}?sheet=Durations`).then(r => r.json());
-  SETTINGS = await fetch(`${API_BASE}?sheet=Settings`).then(r => r.json());
-
-  if (CONFIG[0] && CONFIG[0].Holidays) {
-    HOLIDAYS = CONFIG[0].Holidays.split(",").map(d => d.trim());
-  }
-
-  renderServices();
-  blockUnavailableDates();
-
-  const yearEl = document.getElementById("year");
-  if (yearEl) {
-    yearEl.textContent = new Date().getFullYear();
-  }
-});
-
-// SERVICIOS
-function renderServices() {
-  servicesContainer.innerHTML = "";
-
-  DURATIONS.forEach((s, index) => {
-    const serviceId = `service-${index}`;
-    const minutes = parseInt(s.Minutes, 10) || 0;
-    const staff = (s.Staff || "").trim();
-
-    const card = document.createElement("div");
-    card.className = "service-card";
-
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.id = serviceId;
-    checkbox.value = s.Service;
-    checkbox.dataset.staff = staff;
-
-    checkbox.addEventListener("change", () => {
-      const isValid = validateSelectedServicesStaff();
-
-      if (isValid) {
-        updateSelectedStaffInfo();
-        renderTimeButtons();
-      } else {
-        updateSelectedStaffInfo();
-        timeButtonsContainer.innerHTML = "<p>Please select services from the same professional</p>";
-        timeInput.value = "";
+      const yearEl = document.getElementById("year");
+      if (yearEl) {
+        yearEl.textContent = new Date().getFullYear();
       }
     });
 
-    const label = document.createElement("label");
-    label.setAttribute("for", serviceId);
+    function renderServices() {
+      servicesContainer.innerHTML = "";
 
-    const nameSpan = document.createElement("span");
-    nameSpan.className = "service-name";
-    nameSpan.textContent = s.Service;
+      DURATIONS.forEach((s, index) => {
+        const serviceId = `service-${index}`;
+        const minutes = parseInt(s.Minutes, 10) || 0;
+        const staff = (s.Staff || "").trim();
 
-    const minutesSpan = document.createElement("span");
-    minutesSpan.className = "service-minutes";
-    minutesSpan.textContent = `${minutes} min`;
+        const card = document.createElement("div");
+        card.className = "service-card";
 
-    label.appendChild(nameSpan);
-    label.appendChild(minutesSpan);
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = serviceId;
+        checkbox.value = s.Service;
+        checkbox.dataset.staff = staff;
 
-    card.appendChild(checkbox);
-    card.appendChild(label);
+        checkbox.addEventListener("change", () => {
+          const isValid = validateSelectedServicesStaff();
 
-    servicesContainer.appendChild(card);
-  });
-}
+          if (isValid) {
+            updateSelectedStaffInfo();
+            renderTimeButtons();
+          } else {
+            updateSelectedStaffInfo();
+            timeButtonsContainer.innerHTML = "<p>Please select services from the same professional</p>";
+            timeInput.value = "";
+          }
+        });
 
-// VALIDAR QUE TODOS LOS SERVICIOS SEAN DEL MISMO STAFF
-function validateSelectedServicesStaff() {
-  const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
+        const label = document.createElement("label");
+        label.setAttribute("for", serviceId);
 
-  if (!selectedServices.length) return true;
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "service-name";
+        nameSpan.textContent = s.Service;
 
-  const uniqueStaff = [
-    ...new Set(
-      selectedServices
-        .map(input => (input.dataset.staff || "").trim())
-        .filter(Boolean)
-    )
-  ];
+        const minutesSpan = document.createElement("span");
+        minutesSpan.className = "service-minutes";
+        minutesSpan.textContent = `${minutes} min`;
 
-  if (uniqueStaff.length > 1) {
-    const checkedInputs = [...document.querySelectorAll("#services-container input:checked")];
-    const lastChecked = checkedInputs[checkedInputs.length - 1];
+        label.appendChild(nameSpan);
+        label.appendChild(minutesSpan);
 
-    if (lastChecked) {
-      lastChecked.checked = false;
+        card.appendChild(checkbox);
+        card.appendChild(label);
+
+        servicesContainer.appendChild(card);
+      });
     }
 
-    alert("Selected services must belong to the same professional.");
-    return false;
-  }
+    function validateSelectedServicesStaff() {
+      const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
 
-  return true;
-}
+      if (!selectedServices.length) return true;
 
-// OBTENER EL STAFF ACTUAL
-function getSelectedStaff() {
-  const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
+      const uniqueStaff = [
+        ...new Set(
+          selectedServices
+            .map(input => (input.dataset.staff || "").trim())
+            .filter(Boolean)
+        )
+      ];
 
-  const uniqueStaff = [
-    ...new Set(
-      selectedServices
-        .map(input => (input.dataset.staff || "").trim())
-        .filter(Boolean)
-    )
-  ];
+      if (uniqueStaff.length > 1) {
+        const checkedInputs = [...document.querySelectorAll("#services-container input:checked")];
+        const lastChecked = checkedInputs[checkedInputs.length - 1];
 
-  return uniqueStaff.length === 1 ? uniqueStaff[0] : "";
-}
+        if (lastChecked) {
+          lastChecked.checked = false;
+        }
 
-// MOSTRAR STAFF SELECCIONADO
-function updateSelectedStaffInfo() {
-  const staffInfo = document.getElementById("selected-staff-info");
-  if (!staffInfo) return;
+        alert("Selected services must belong to the same professional.");
+        return false;
+      }
 
-  const staff = getSelectedStaff();
+      return true;
+    }
 
-  if (!staff) {
-    staffInfo.style.display = "none";
-    staffInfo.textContent = "";
-    return;
-  }
+    function getSelectedStaff() {
+      const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
 
-  staffInfo.style.display = "block";
-  staffInfo.textContent = `You will be attended by: ${staff}`;
-}
+      const uniqueStaff = [
+        ...new Set(
+          selectedServices
+            .map(input => (input.dataset.staff || "").trim())
+            .filter(Boolean)
+        )
+      ];
 
-// CALENDARIO
-function blockUnavailableDates() {
-  flatpickr("#date", {
-    minDate: "today",
-    disable: [...HOLIDAYS],
-    dateFormat: "Y-m-d",
-    onChange: function(selectedDates, dateStr) {
-      if (HOLIDAYS.includes(dateStr)) {
-        alert("This day is unavailable. Please select another date.");
-        dateInput.value = "";
+      return uniqueStaff.length === 1 ? uniqueStaff[0] : "";
+    }
+
+    function updateSelectedStaffInfo() {
+      const staffInfo = document.getElementById("selected-staff-info");
+      if (!staffInfo) return;
+
+      const staff = getSelectedStaff();
+
+      if (!staff) {
+        staffInfo.style.display = "none";
+        staffInfo.textContent = "";
         return;
       }
 
-      renderTimeButtons();
-    }
-  });
-}
-
-// GENERAR SLOTS
-function generateSlots() {
-  const slots = [];
-
-  SETTINGS.forEach(row => {
-    const hour = parseInt(row.Time.split(":")[0], 10);
-    slots.push(`${hour.toString().padStart(2, "0")}:00`);
-    slots.push(`${hour.toString().padStart(2, "0")}:30`);
-  });
-
-  return slots;
-}
-
-// HORARIOS
-async function renderTimeButtons() {
-  const date = dateInput.value;
-
-  timeButtonsContainer.innerHTML = "";
-  timeInput.value = "";
-
-  if (!date) return;
-
-  const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
-
-  if (!selectedServices.length) {
-    timeButtonsContainer.innerHTML = "<p>Select a service first</p>";
-    return;
-  }
-
-  if (!validateSelectedServicesStaff()) {
-    timeButtonsContainer.innerHTML = "<p>Please select services from the same professional</p>";
-    return;
-  }
-
-  const selectedStaff = getSelectedStaff();
-
-  if (!selectedStaff) {
-    timeButtonsContainer.innerHTML = "<p>This service does not have an assigned professional</p>";
-    return;
-  }
-
-  const appointments = await fetch(`${API_BASE}/search?sheet=Appointments&Date=${date}`).then(r => r.json());
-
-  const booked = appointments
-    .filter(a => a.Status === "Approved" && (a.Staff || "").trim() === selectedStaff)
-    .map(a => a.Start);
-
-  let totalMinutes = 0;
-
-  selectedServices.forEach(s => {
-    const row = DURATIONS.find(d => d.Service === s.value);
-    if (row) totalMinutes += parseInt(row.Minutes, 10);
-  });
-
-  const durationSlots = Math.ceil(totalMinutes / 30);
-  const allTimes = generateSlots();
-
-  const lunchStart = parseInt(CONFIG[0].LunchStart.split(":")[0], 10);
-  const lunchEnd = parseInt(CONFIG[0].LunchEnd.split(":")[0], 10);
-
-  const now = new Date();
-  const todayStr = now.toISOString().split("T")[0];
-  const currentMinutes = now.getHours() * 60 + now.getMinutes();
-
-  allTimes.forEach(time => {
-    const parts = time.split(":");
-
-    const startHour = parseInt(parts[0], 10);
-    const startMinute = parseInt(parts[1], 10);
-
-    const startTotal = startHour * 60 + startMinute;
-    const endTotal = startTotal + durationSlots * 30;
-    const endHour = Math.floor(endTotal / 60);
-
-    if (date === todayStr && startTotal <= currentMinutes) {
-      return;
+      staffInfo.style.display = "block";
+      staffInfo.textContent = `You will be attended by: ${staff}`;
     }
 
-    if (startHour < lunchEnd && endHour > lunchStart) return;
+    function blockUnavailableDates() {
+      flatpickr("#date", {
+        minDate: "today",
+        disable: [...HOLIDAYS],
+        dateFormat: "Y-m-d",
+        onChange: function(selectedDates, dateStr) {
+          if (HOLIDAYS.includes(dateStr)) {
+            alert("This day is unavailable. Please select another date.");
+            dateInput.value = "";
+            return;
+          }
 
-    let available = true;
+          renderTimeButtons();
+        }
+      });
+    }
 
-    for (let i = 0; i < durationSlots; i++) {
-      const minutes = startTotal + i * 30;
-      const h = Math.floor(minutes / 60);
-      const m = minutes % 60;
-      const check = `${h.toString().padStart(2, "0")}:${m === 0 ? "00" : "30"}`;
+    function generateSlots() {
+      const slots = [];
 
-      if (booked.includes(check)) {
-        available = false;
-        break;
+      SETTINGS.forEach(row => {
+        const hour = parseInt(row.Time.split(":")[0], 10);
+        slots.push(`${hour.toString().padStart(2, "0")}:00`);
+        slots.push(`${hour.toString().padStart(2, "0")}:30`);
+      });
+
+      return slots;
+    }
+
+    async function renderTimeButtons() {
+      const date = dateInput.value;
+
+      timeButtonsContainer.innerHTML = "";
+      timeInput.value = "";
+
+      if (!date) return;
+
+      const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
+
+      if (!selectedServices.length) {
+        timeButtonsContainer.innerHTML = "<p>Select a service first</p>";
+        return;
+      }
+
+      if (!validateSelectedServicesStaff()) {
+        timeButtonsContainer.innerHTML = "<p>Please select services from the same professional</p>";
+        return;
+      }
+
+      const selectedStaff = getSelectedStaff();
+
+      if (!selectedStaff) {
+        timeButtonsContainer.innerHTML = "<p>This service does not have an assigned professional</p>";
+        return;
+      }
+
+      const appointments = await fetch(`${API_BASE}/search?sheet=Appointments&Date=${date}`).then(r => r.json());
+
+      const booked = appointments
+        .filter(a => a.Status === "Approved" && (a.Staff || "").trim() === selectedStaff)
+        .map(a => a.Start);
+
+      let totalMinutes = 0;
+
+      selectedServices.forEach(s => {
+        const row = DURATIONS.find(d => d.Service === s.value);
+        if (row) totalMinutes += parseInt(row.Minutes, 10);
+      });
+
+      const durationSlots = Math.ceil(totalMinutes / 30);
+      const allTimes = generateSlots();
+
+      const lunchStart = parseInt(CONFIG[0].LunchStart.split(":")[0], 10);
+      const lunchEnd = parseInt(CONFIG[0].LunchEnd.split(":")[0], 10);
+
+      const now = new Date();
+      const todayStr = now.toISOString().split("T")[0];
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      allTimes.forEach(time => {
+        const parts = time.split(":");
+
+        const startHour = parseInt(parts[0], 10);
+        const startMinute = parseInt(parts[1], 10);
+
+        const startTotal = startHour * 60 + startMinute;
+        const endTotal = startTotal + durationSlots * 30;
+        const endHour = Math.floor(endTotal / 60);
+
+        if (date === todayStr && startTotal <= currentMinutes) {
+          return;
+        }
+
+        if (startHour < lunchEnd && endHour > lunchStart) return;
+
+        let available = true;
+
+        for (let i = 0; i < durationSlots; i++) {
+          const minutes = startTotal + i * 30;
+          const h = Math.floor(minutes / 60);
+          const m = minutes % 60;
+          const check = `${h.toString().padStart(2, "0")}:${m === 0 ? "00" : "30"}`;
+
+          if (booked.includes(check)) {
+            available = false;
+            break;
+          }
+        }
+
+        if (!available) return;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "time-btn";
+        btn.dataset.time = time;
+
+        const endMinutes = startTotal + durationSlots * 30;
+        const endH = Math.floor(endMinutes / 60);
+        const endM = endMinutes % 60;
+        const endText = `${endH.toString().padStart(2, "0")}:${endM === 0 ? "00" : "30"}`;
+
+        btn.textContent = `${time} - ${endText}`;
+
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".time-btn.selected").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          timeInput.value = time;
+        });
+
+        timeButtonsContainer.appendChild(btn);
+      });
+
+      if (timeButtonsContainer.children.length === 0) {
+        timeButtonsContainer.innerHTML = "<p>No times available</p>";
       }
     }
 
-    if (!available) return;
+    document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
 
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "time-btn";
-    btn.dataset.time = time;
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
 
-    const endMinutes = startTotal + durationSlots * 30;
-    const endH = Math.floor(endMinutes / 60);
-    const endM = endMinutes % 60;
-    const endText = `${endH.toString().padStart(2, "0")}:${endM === 0 ? "00" : "30"}`;
+      const date = dateInput.value;
+      const start = timeInput.value;
 
-    btn.textContent = `${time} - ${endText}`;
+      const cleanPhone = phone.replace(/\D/g, "");
 
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".time-btn.selected").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      timeInput.value = time;
-    });
+      if (cleanPhone.length !== 10) {
+        alert("Please enter a valid US phone number.");
+        return;
+      }
 
-    timeButtonsContainer.appendChild(btn);
-  });
+      if (!start) {
+        alert("Please select a time");
+        return;
+      }
 
-  if (timeButtonsContainer.children.length === 0) {
-    timeButtonsContainer.innerHTML = "<p>No times available</p>";
-  }
-}
+      const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
 
-// ENVIAR
-document.getElementById("bookingForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+      if (!selectedServices.length) {
+        alert("Please select a service");
+        return;
+      }
 
-  const name = document.getElementById("name").value.trim();
-  const phone = document.getElementById("phone").value.trim();
-  const email = document.getElementById("email").value.trim();
+      if (!validateSelectedServicesStaff()) {
+        alert("Please select services from the same professional.");
+        return;
+      }
 
-  const date = dateInput.value;
-  const start = timeInput.value;
+      const staff = getSelectedStaff();
 
-  const cleanPhone = phone.replace(/\D/g, "");
+      if (!staff) {
+        alert("This service does not have an assigned professional.");
+        return;
+      }
 
-  if (cleanPhone.length !== 10) {
-    alert("Please enter a valid US phone number.");
-    return;
-  }
+      let totalMinutes = 0;
 
-  const whatsappNumber = "1" + cleanPhone;
+      selectedServices.forEach(s => {
+        const row = DURATIONS.find(d => d.Service === s.value);
+        if (row) totalMinutes += parseInt(row.Minutes, 10);
+      });
 
-  if (!start) {
-    alert("Please select a time");
-    return;
-  }
+      const startParts = start.split(":");
+      const startTotal = parseInt(startParts[0], 10) * 60 + parseInt(startParts[1], 10);
+      const endTotal = startTotal + totalMinutes;
+      const endH = Math.floor(endTotal / 60);
+      const endM = endTotal % 60;
+      const end = `${endH.toString().padStart(2, "0")}:${endM === 0 ? "00" : "30"}`;
 
-  const selectedServices = [...document.querySelectorAll("#services-container input:checked")];
+      const data = {
+        Timestamp: new Date().toISOString(),
+        Name: name,
+        Phone: cleanPhone,
+        Email: email,
+        Date: date,
+        Start: start,
+        End: end,
+        Services: selectedServices.map(s => s.value).join(", "),
+        Staff: staff,
+        Status: "Pending"
+      };
 
-  if (!selectedServices.length) {
-    alert("Please select a service");
-    return;
-  }
+      await fetch(API_BASE, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data })
+      });
 
-  if (!validateSelectedServicesStaff()) {
-    alert("Please select services from the same professional.");
-    return;
-  }
-
-  const staff = getSelectedStaff();
-
-  if (!staff) {
-    alert("This service does not have an assigned professional.");
-    return;
-  }
-
-  let totalMinutes = 0;
-
-  selectedServices.forEach(s => {
-    const row = DURATIONS.find(d => d.Service === s.value);
-    if (row) totalMinutes += parseInt(row.Minutes, 10);
-  });
-
-  const startParts = start.split(":");
-  const startTotal = parseInt(startParts[0], 10) * 60 + parseInt(startParts[1], 10);
-  const endTotal = startTotal + totalMinutes;
-  const endH = Math.floor(endTotal / 60);
-  const endM = endTotal % 60;
-  const end = `${endH.toString().padStart(2, "0")}:${endM === 0 ? "00" : "30"}`;
-
-  const data = {
-    Timestamp: new Date().toISOString(),
-    Name: name,
-    Phone: cleanPhone,
-    Email: email,
-    Date: date,
-    Start: start,
-    End: end,
-    Services: selectedServices.map(s => s.value).join(", "),
-    Staff: staff,
-    Status: "Pending"
-  };
-
-  await fetch(API_BASE, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ data })
-  });
-
-  const msg = encodeURIComponent(
+      const msg = encodeURIComponent(
 `Hello JessMakeUP!
 
 Appointment request:
 Name: ${name}
+Customer phone: +1${cleanPhone}
+Email: ${email}
 Professional: ${staff}
 Date: ${date}
 Time: ${start} - ${end}
 Services: ${data.Services}
 
 Thank you!`
-  );
+      );
 
-  window.open(`https://wa.me/${whatsappNumber}?text=${msg}`, "_blank");
+      window.location.href = `https://wa.me/${BUSINESS_WHATSAPP}?text=${msg}`;
+    });
 
-  document.getElementById("successPopup").style.display = "flex";
-  document.getElementById("bookingForm").reset();
-  timeButtonsContainer.innerHTML = "";
-  timeInput.value = "";
-
-  const staffInfo = document.getElementById("selected-staff-info");
-  if (staffInfo) {
-    staffInfo.style.display = "none";
-    staffInfo.textContent = "";
-  }
-});
-
-// POPUP
-document.getElementById("popupOkBtn").addEventListener("click", () => {
-  document.getElementById("successPopup").style.display = "none";
-});
-</script>
-
-<footer class="site-footer">
-  <p>© <span id="year"></span> JessMakeUP & Nails · All rights reserved</p>
-  <p class="footer-credit">
-    An official
-    <a href="https://arthurnolimit.com" target="_blank">ArthurNoLimit</a> Product
-  </p>
-</footer>
-
+    document.getElementById("popupOkBtn").addEventListener("click", () => {
+      document.getElementById("successPopup").style.display = "none";
+    });
+  </script>
 </body>
 </html>
