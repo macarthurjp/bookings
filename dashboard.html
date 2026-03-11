@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>JessMakeUP · Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --bg: #FAF8F5;
+  --card-bg: #FFFFFF;
+  --primary: #A67C52;
+  --border: #E0DAD3;
+  --text-main: #3A3A3A;
+  --text-muted: #8A8A8A;
+  --danger: #C94B4B;
+  --success: #3BA776;
+  --pending: #A67C52;
+}
+
+/* GENERAL */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  padding: 24px 16px;
+}
+
+/* LOGIN SCREEN */
+#loginScreen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.login-box {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  padding: 32px 26px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 360px;
+  text-align: center;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.06);
+}
+
+.login-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  margin-bottom: 6px;
+  color: var(--primary);
+}
+
+.login-sub {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  font-size: 16px;
+  margin-bottom: 14px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-btn:active {
+  transform: scale(0.94);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.login-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.login-error {
+  color: var(--danger);
+  font-size: 12px;
+  margin-top: 8px;
+  display: none;
+}
+
+/* LOGIN PREMIUM / FACE ID STYLE */
+.login-box::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 16px;
+  background: linear-gradient(
+    135deg,
+    rgba(166,124,82,0.18),
+    rgba(255,255,255,0),
+    rgba(166,124,82,0.08)
+  );
+  pointer-events: none;
+}
+
+.login-box.shake {
+  animation: loginShake 0.36s ease-in-out;
+}
+
+@keyframes loginShake {
+  0% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(7px); }
+  60% { transform: translateX(-5px); }
+  80% { transform: translateX(4px); }
+  100% { transform: translateX(0); }
+}
+
+#faceIdFx {
+  position: absolute;
+  inset: 0;
+  background: rgba(250, 248, 245, 0.96);
+  backdrop-filter: blur(8px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 30;
+  border-radius: 16px;
+  text-align: center;
+  padding: 24px;
+}
+
+#faceIdFx.show {
+  opacity: 1;
+}
+
+.faceid-ring,
+.faceid-check,
+.faceid-text {
+  position: relative;
+  z-index: 2;
+}
+
+.faceid-ring {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: 3px solid rgba(166,124,82,0.22);
+  border-top-color: var(--primary);
+  animation: faceSpin 0.8s linear infinite;
+  box-shadow: 0 0 0 8px rgba(166,124,82,0.05);
+}
+
+.faceid-check {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--success);
+  margin-top: -58px;
+}
+
+.faceid-text {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@keyframes faceSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* DASHBOARD */
+#dashboard {
+  display: none;
+}
+
+.page {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: var(--primary);
+}
+
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.16em;
+}
+
+.card {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.06);
+  margin-bottom: 16px;
+  overflow: visible;
+}
+
+.filters input,
+.filters select {
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: visible !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  overflow: visible;
+}
+
+th,
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid #F0ECE6;
+  white-space: nowrap;
+  vertical-align: middle;
+  overflow: visible;
+}
+
+tbody,
+tr {
+  overflow: visible;
+}
+
+.badge {
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.badge-approved {
+  background: rgba(59,167,118,0.08);
+  color: var(--success);
+}
+
+.badge-pending {
+  background: rgba(166,124,82,0.08);
+  color: var(--pending);
+}
+
+.badge-rejected {
+  background: rgba(201,75,75,0.08);
+  color: var(--danger);
+}
+
+.btn {
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.btn-outline {
+  border: 1px solid var(--border);
+  background: transparent;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* POPUP */
+#confirmPopup {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.popup-box {
+  background: #fff;
+  padding: 22px;
+  border-radius: 18px;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+}
+
+/* PAGINACIÓN */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-top: 20px;
+  padding: 12px 0;
+}
+
+.page-btn,
+.arrow-btn {
+  padding: 8px 14px;
+  background: #f2f2f7;
+  border-radius: 12px;
+  border: none;
+  color: #3a3a3c;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+}
+
+.page-btn:hover,
+.arrow-btn:hover {
+  background: #e5e5ea;
+  transform: translateY(-1px);
+}
+
+.active-page {
+  background: #A67C52;
+  color: white;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(166,124,82,0.35);
+  transform: translateY(-1px);
+}
+
+.pagination span {
+  color: #999;
+  font-size: 16px;
+  padding: 0 4px;
+}
+
+/* ROW COLOR BY STATUS */
+tr:has(.badge-approved) {
+  background: rgba(59,167,118,0.06);
+}
+
+tr:has(.badge-pending) {
+  background: rgba(166,124,82,0.06);
+}
+
+tr:has(.badge-rejected) {
+  background: rgba(201,75,75,0.06);
+}
+
+tr:has(.badge-approved) td,
+tr:has(.badge-pending) td,
+tr:has(.badge-rejected) td {
+  border-bottom-color: rgba(0,0,0,0.05);
+}
+
+/* TOOLTIP DATE TIME */
+.datetime-cell {
+  position: relative;
+  cursor: help;
+}
+
+.datetime-text {
+  display: inline-block;
+  font-weight: 500;
+}
+
+.datetime-cell::after {
+  content: attr(data-duration);
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  background: rgba(58, 58, 58, 0.96);
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.2;
+  padding: 8px 10px;
+  border-radius: 10px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  z-index: 9999;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+}
+
+.datetime-cell::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  top: calc(100% + 2px);
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid rgba(58, 58, 58, 0.96);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
+  z-index: 9999;
+}
+
+.datetime-cell:hover::after,
+.datetime-cell:hover::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* TABLET / MOBILE */
+@media (max-width: 768px) {
+  body {
+    padding: 16px 10px;
+  }
+
+  .page {
+    max-width: 100%;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .header > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .logo {
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  .title {
+    font-size: 22px;
+    line-height: 1.15;
+  }
+
+  .subtitle {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+
+  #lastRefresh {
+    font-size: 12px !important;
+  }
+
+  #refreshBtn {
+    width: 100%;
+  }
+
+  .filters {
+    display: flex !important;
+    flex-direction: column;
+    gap: 10px !important;
+  }
+
+  .filters > div {
+    width: 100%;
+  }
+
+  .filters input,
+  .filters select {
+    width: 100%;
+    min-height: 42px;
+    font-size: 16px;
+  }
+
+  section.card > div[style*="justify-content:space-between"] {
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 10px;
+  }
+
+  section.card > div[style*="justify-content:space-between"] > div:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  section.card > div[style*="justify-content:space-between"] > div:last-child .btn {
+    width: 100%;
+  }
+
+  .table-wrapper {
+    overflow-x: auto;
+    overflow-y: visible !important;
+  }
+
+  table {
+    min-width: 640px;
+  }
+
+  td,
+  th {
+    font-size: 12px;
+    padding: 8px 8px;
+  }
+
+  .badge {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  td:last-child {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 120px;
+  }
+
+  td:last-child .btn {
+    width: 100%;
+    text-align: center;
+    padding: 7px 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 12px 8px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .logo {
+    font-size: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  table {
+    min-width: 560px;
+  }
+
+  .pagination {
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .page-btn,
+  .arrow-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .datetime-cell::after {
+    font-size: 11px;
+    padding: 7px 9px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="loginScreen">
+  <div class="login-box">
+    <div class="login-title">Dashboard Access</div>
+    <div class="login-sub">Enter your PIN to continue</div>
+    <input type="password" id="pinInput" class="login-input" placeholder="Enter PIN">
+    <button class="login-btn" id="loginBtn">Enter</button>
+    <div class="login-error" id="loginError">Incorrect PIN</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="page">
+
+    <header class="header">
+      <div>
+        <div class="logo">JESSMAKEUP & NAILS</div>
+        <div class="title">Appointments Dashboard</div>
+        <div class="subtitle">MANAGE · TRACK · OPTIMIZE</div>
+      </div>
+      <div>
+        <div id="lastRefresh" style="font-size:12px;color:var(--text-muted);">Last refresh: —</div>
+        <button class="btn btn-outline" id="refreshBtn">Refresh</button>
+      </div>
+    </header>
+
+    <!-- Filters -->
+    <section class="card">
+      <div class="filters" style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div>
+          <label>Date</label><br>
+          <input type="date" id="filterDate">
+        </div>
+        <div>
+          <label>Status</label><br>
+          <select id="filterStatus">
+            <option value="">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Pending">Pending</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+        </div>
+        <div>
+          <label>Search</label><br>
+          <input type="text" id="searchName" placeholder="Name, phone, email">
+        </div>
+      </div>
+    </section>
+
+    <!-- Table -->
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:13px;font-weight:600;">Appointments</div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-outline" id="exportCsvBtn">Export CSV</button>
+          <button class="btn btn-outline" id="exportPdfBtn">Export PDF</button>
+        </div>
+      </div>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Date Time</th>
+              <th>Name</th>
+              <th>Services</th>
+              <th>Phone</th>
+              <th>Attended By</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="appointmentsBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- CONFIRM POPUP -->
+<div id="confirmPopup">
+  <div class="popup-box">
+    <div id="confirmTitle" style="font-size:20px;margin-bottom:6px;">Confirm</div>
+    <div id="confirmText" style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">Are you sure?</div>
+    <div style="display:flex;gap:8px;justify-content:center;">
+      <button class="btn btn-outline" id="cancelConfirmBtn">Cancel</button>
+      <button class="btn btn-danger" id="okConfirmBtn">Yes</button>
+    </div>
+  </div>
+</div>
+
+<!-- PDF LIBRARIES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+<script>
+/* =========================
+LOGIN DEBUG + HASH + LOCK
+========================= */
+
+const PIN_HASH = "c1b60140ba8caac9eb3f2dd41339de1a289e15c4c5639400869199bf3d63870a";
+
+const MAX_ATTEMPTS = 3;
+const LOCK_TIME_MS = 30000;
+
+const loginBtn = document.getElementById("loginBtn");
+const pinInput = document.getElementById("pinInput");
+const loginError = document.getElementById("loginError");
+const loginScreen = document.getElementById("loginScreen");
+const dashboard = document.getElementById("dashboard");
+
+let loginAttempts = parseInt(localStorage.getItem("dashboard_login_attempts") || "0", 10);
+let lockUntil = parseInt(localStorage.getItem("dashboard_lock_until") || "0", 10);
+
+async function sha256(text) {
+  const enc = new TextEncoder().encode(text);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", enc);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function showLoginError(message) {
+  console.log("LOGIN ERROR:", message);
+  loginError.textContent = message;
+  loginError.style.display = "block";
+}
+
+function clearLoginError() {
+  loginError.textContent = "";
+  loginError.style.display = "none";
+}
+
+function updateLockState() {
+  const now = Date.now();
+
+  if (lockUntil > now) {
+    const seconds = Math.ceil((lockUntil - now) / 1000);
+    loginBtn.disabled = true;
+    pinInput.disabled = true;
+    showLoginError(`Too many attempts. Try again in ${seconds}s`);
+    return true;
+  }
+
+  if (lockUntil && now >= lockUntil) {
+    lockUntil = 0;
+    loginAttempts = 0;
+    localStorage.removeItem("dashboard_lock_until");
+    localStorage.setItem("dashboard_login_attempts", "0");
+  }
+
+  loginBtn.disabled = false;
+  pinInput.disabled = false;
+  clearLoginError();
+  return false;
+}
+
+async function handleLogin() {
+  try {
+    if (updateLockState()) return;
+
+    const input = pinInput.value.trim();
+
+    if (!input) {
+      showLoginError("Enter your PIN");
+      return;
+    }
+
+    const hashedInput = await sha256(input);
+
+    console.log("PIN escrito:", input);
+    console.log("HASH escrito:", hashedInput);
+    console.log("HASH guardado:", PIN_HASH);
+
+    if (hashedInput === PIN_HASH) {
+      console.log("PIN correcto");
+      loginAttempts = 0;
+      lockUntil = 0;
+      localStorage.setItem("dashboard_login_attempts", "0");
+      localStorage.removeItem("dashboard_lock_until");
+      clearLoginError();
+      loginScreen.style.display = "none";
+      dashboard.style.display = "block";
+    } else {
+      console.log("PIN incorrecto");
+      loginAttempts += 1;
+      localStorage.setItem("dashboard_login_attempts", String(loginAttempts));
+      pinInput.value = "";
+
+      if (loginAttempts >= MAX_ATTEMPTS) {
+        lockUntil = Date.now() + LOCK_TIME_MS;
+        localStorage.setItem("dashboard_lock_until", String(lockUntil));
+        updateLockState();
+      } else {
+        showLoginError(`Incorrect PIN. Attempt ${loginAttempts} of ${MAX_ATTEMPTS}`);
+      }
+    }
+  } catch (error) {
+    console.error("ERROR EN LOGIN:", error);
+    showLoginError("Login error. Check console.");
+  }
+}
+
+loginBtn.onclick = handleLogin;
+
+pinInput.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    handleLogin();
+  }
+});
+
+pinInput.addEventListener("input", () => {
+  if (!loginBtn.disabled) clearLoginError();
+});
+
+setInterval(updateLockState, 1000);
+updateLockState();
+/* =========================
+BASE
+========================= */
+
+const API_BASE = "https://sheetdb.io/api/v1/vjwpuzqkosor4";
+
+let allAppointments = [];
+let pendingAction = null;
+
+const tbody        = document.getElementById("appointmentsBody");
+const filterDate   = document.getElementById("filterDate");
+const filterStatus = document.getElementById("filterStatus");
+const searchName   = document.getElementById("searchName");
+const lastRefresh  = document.getElementById("lastRefresh");
+
+/* =========================
+TOAST + PUSH NOTIFICATIONS
+========================= */
+
+function showToast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "toast";
+    t.className = "toast";
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+
+function notify(msg) {
+  if ("Notification" in window && Notification.permission === "granted") {
+    new Notification("JessMakeUP Dashboard", { body: msg });
+  } else {
+    showToast(msg);
+  }
+}
+
+if ("Notification" in window && Notification.permission === "default") {
+  Notification.requestPermission();
+}
+
+/* =========================
+DARK MODE
+========================= */
+
+(function initDarkMode() {
+  let btn = document.getElementById("darkModeToggle");
+  if (!btn) {
+    btn = document.createElement("button");
+    btn.id = "darkModeToggle";
+    btn.textContent = "🌙";
+    btn.style.position = "fixed";
+    btn.style.top = "12px";
+    btn.style.right = "12px";
+    btn.style.zIndex = "999";
+    btn.className = "btn btn-outline";
+    document.body.appendChild(btn);
+  }
+
+  const saved = localStorage.getItem("dashboard_dark_mode") === "1";
+  if (saved) document.body.classList.add("dark-mode");
+
+  btn.onclick = () => {
+    document.body.classList.toggle("dark-mode");
+    localStorage.setItem(
+      "dashboard_dark_mode",
+      document.body.classList.contains("dark-mode") ? "1" : "0"
+    );
+  };
+})();
+
+/* =========================
+HELPERS
+========================= */
+
+function normalizeStatus(s) {
+  if (!s) return "";
+  const clean = s.toString().trim().toLowerCase();
+  if (clean.startsWith("appr")) return "Approved";
+  if (clean.startsWith("pend")) return "Pending";
+  if (clean.startsWith("rej"))  return "Rejected";
+  return s;
+}
+
+/* FORMATO Apple Calendar */
+function formatDateTime(dateStr, startTime) {
+  if (!dateStr) return "";
+
+  const date = new Date(`${dateStr}T00:00:00`);
+  const formattedDate = date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric"
+  });
+
+  if (!startTime) return formattedDate;
+
+  const [hour, minute] = startTime.split(":").map(Number);
+  const timeObj = new Date();
+  timeObj.setHours(hour, minute || 0, 0, 0);
+
+  const formattedTime = timeObj.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit"
+  });
+
+  return `${formattedDate} · ${formattedTime}`;
+}
+
+function normalizeText(str) {
+  return (str || "")
+    .toString()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+/* =========================
+AUTOREFRESH
+========================= */
+
+let autoRefreshInterval = null;
+const AUTO_REFRESH_MS = 60000; // 60s
+
+function startAutoRefresh() {
+  stopAutoRefresh();
+  autoRefreshInterval = setInterval(() => {
+    if (!document.hidden) fetchAppointments(false);
+  }, AUTO_REFRESH_MS);
+}
+
+function stopAutoRefresh() {
+  if (autoRefreshInterval) clearInterval(autoRefreshInterval);
+  autoRefreshInterval = null;
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) stopAutoRefresh();
+  else startAutoRefresh();
+});
+
+/* =========================
+FETCH APPOINTMENTS
+========================= */
+
+function fetchAppointments(showMessage = true) {
+  tbody.innerHTML = "<tr><td colspan='7'>Loading...</td></tr>";
+  fetch(API_BASE)
+    .then(res => res.json())
+    .then(data => {
+      allAppointments = data;
+      renderTable();
+      lastRefresh.textContent = "Last refresh: " + new Date().toLocaleString();
+          });
+}
+
+/* =========================
+FILTERS (ADVANCED)
+========================= */
+
+let currentPage   = 1;
+const rowsPerPage = 10;
+
+function getFilteredRows() {
+  const dateFilter   = filterDate.value;
+  const statusFilter = filterStatus.value;
+  const search       = normalizeText(searchName.value.trim());
+
+  return allAppointments
+    .map(r => ({ ...r, _statusNorm: normalizeStatus(r.Status || "") }))
+    .filter(row => {
+      const rowDate   = row.Date || "";
+      const rowStatus = row._statusNorm;
+
+      // 🔥 Ahora la búsqueda incluye Date, Start y End
+      const haystack = [
+        row.Name,
+        row.Phone,
+        row.Email,
+        row.Services,
+        row.Date,
+        row.Start,
+        row.End
+      ].map(normalizeText).join(" ");
+
+      if (dateFilter && rowDate !== dateFilter) return false;
+      if (statusFilter && rowStatus !== statusFilter) return false;
+
+      if (search) {
+        const terms = search.split(" ").filter(Boolean);
+        for (const term of terms) {
+          if (!haystack.includes(term)) return false;
+        }
+      }
+
+      return true;
+    })
+    .sort((a, b) => {
+      const d1 = new Date((a.Date || "") + " " + (a.Start || "00:00"));
+      const d2 = new Date((b.Date || "") + " " + (b.Start || "00:00"));
+      return d1 - d2;
+    });
+}
+
+const searchInput = document.getElementById("searchName");
+
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    currentPage = 1;
+    renderTable();
+  });
+}
+
+
+/* =========================
+EXPORT HELPERS
+========================= */
+
+function pickColumns(row, selectedColumns) {
+  const obj = {};
+  selectedColumns.forEach(col => {
+    if (col === "Time") {
+      obj[col] = `${row.Start || ""}${row.End ? " - " + row.End : ""}`;
+    } else {
+      obj[col] = row[col] || "";
+    }
+  });
+  return obj;
+}
+
+/* =========================
+PAGINATION
+========================= */
+
+function renderPagination(totalRows) {
+  let container = document.getElementById("pagination");
+
+  if (!container) {
+    container = document.createElement("div");
+    container.id = "pagination";
+    container.className = "pagination";
+    tbody.parentElement.appendChild(container);
+  }
+
+  const totalPages = Math.ceil(totalRows / rowsPerPage);
+  container.innerHTML = "";
+  if (totalPages <= 1) return;
+
+  // Flecha anterior
+  const prev = document.createElement("button");
+  prev.textContent = "‹";
+  prev.className = "arrow-btn";
+  prev.disabled = currentPage === 1;
+  prev.onclick = () => {
+    if (currentPage > 1) {
+      currentPage--;
+      renderTable();
+    }
+  };
+  container.appendChild(prev);
+
+  const addBtn = (page) => {
+    const btn = document.createElement("button");
+    btn.textContent = page;
+    btn.className = "page-btn";
+    if (page === currentPage) btn.classList.add("active-page");
+    btn.onclick = () => {
+      currentPage = page;
+      renderTable();
+    };
+    container.appendChild(btn);
+  };
+
+  // Página 1
+  addBtn(1);
+
+  // Dots antes del bloque central
+  if (currentPage > 4) {
+    container.appendChild(document.createElement("span")).textContent = "…";
+  }
+
+  // Páginas alrededor de la actual
+  for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+    if (i > 1 && i < totalPages) addBtn(i);
+  }
+
+  // Dots después del bloque central
+  if (currentPage < totalPages - 3) {
+    container.appendChild(document.createElement("span")).textContent = "…";
+  }
+
+  // Última página
+  if (totalPages > 1) addBtn(totalPages);
+
+  // Flecha siguiente
+  const next = document.createElement("button");
+  next.textContent = "›";
+  next.className = "arrow-btn";
+  next.disabled = currentPage === totalPages;
+  next.onclick = () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderTable();
+    }
+  };
+  container.appendChild(next);
+}
+
+/* =========================
+RENDER TABLE
+========================= */
+
+function renderTable() {
+  const rows = getFilteredRows();
+
+  if (!rows.length) {
+    tbody.innerHTML = "<tr><td colspan='7'>No appointments found</td></tr>";
+    renderPagination(0);
+    return;
+  }
+
+  const start = (currentPage - 1) * rowsPerPage;
+  const end   = start + rowsPerPage;
+  const pageRows = rows.slice(start, end);
+
+  tbody.innerHTML = "";
+
+  pageRows.forEach(row => {
+    const status = normalizeStatus(row.Status || "");
+    const statusClass =
+      status === "Approved" ? "badge-approved" :
+      status === "Pending"  ? "badge-pending"  :
+                              "badge-rejected";
+
+    const firstService = (row.Services || "").split(",")[0].trim().toLowerCase();
+    let serviceColor = "#A67C52";
+
+    if (firstService.includes("gel"))      serviceColor = "#C94B4B";
+    if (firstService.includes("lash"))     serviceColor = "#3BA776";
+    if (firstService.includes("brow"))     serviceColor = "#4B7BC9";
+    if (firstService.includes("pedicure")) serviceColor = "#C94BB7";
+
+    const timestamp = row.Timestamp;
+
+    const durationText = `${row.Start || ""}${row.End ? " - " + row.End : ""}`;
+
+    const tr = document.createElement("tr");
+    tr.style.borderLeft = `4px solid ${serviceColor}`;
+
+    tr.innerHTML = `
+      <td
+        class="datetime-cell"
+        data-duration="Duration: ${durationText}"
+        title="Duration: ${durationText}"
+      >
+        <span class="datetime-text">${formatDateTime(row.Date, row.Start)}</span>
+      </td>
+      <td>${row.Name || ""}</td>
+      <td>${row.Services || ""}</td>
+      <td>${row.Phone || ""}</td>
+      <td>${row.AttendedBy || ""}</td>
+      <td><span class="badge ${statusClass}">${status}</span></td>
+      <td>
+        <button class="btn btn-outline" data-action="status" data-status="Approved">Set Approved</button>
+        <button class="btn btn-outline" data-action="status" data-status="Rejected">Set Rejected</button>
+        <button class="btn btn-danger" data-action="delete">Delete</button>
+      </td>
+    `;
+
+    const approveBtn = tr.querySelector('button[data-status="Approved"]');
+    const rejectBtn  = tr.querySelector('button[data-status="Rejected"]');
+
+    if (status === "Approved") {
+      approveBtn.disabled = true;
+      approveBtn.style.opacity = "0.4";
+      approveBtn.style.cursor = "not-allowed";
+    }
+
+    if (status === "Rejected") {
+      rejectBtn.disabled = true;
+      rejectBtn.style.opacity = "0.4";
+      rejectBtn.style.cursor = "not-allowed";
+    }
+
+    let approveColor = "#3BA776";
+    let rejectColor  = "#C94B4B";
+
+    if (status === "Approved") approveColor = "#999999";
+    if (status === "Rejected") rejectColor  = "#999999";
+
+    approveBtn.style.borderColor = approveColor;
+    approveBtn.style.color = approveColor;
+
+    rejectBtn.style.borderColor = rejectColor;
+    rejectBtn.style.color = rejectColor;
+
+    tr.querySelectorAll("button").forEach(btn => {
+      const action = btn.dataset.action;
+
+      if (action === "delete") {
+        btn.onclick = () => openConfirm({ type: "delete", timestamp });
+      }
+
+      if (action === "status") {
+        if (btn.disabled) return;
+        btn.onclick = () =>
+          openConfirm({
+            type: "status",
+            timestamp,
+            newStatus: btn.dataset.status
+          });
+      }
+    });
+
+    tbody.appendChild(tr);
+  });
+
+  renderPagination(rows.length);
+}
+
+/* =========================
+CONFIRM POPUP
+========================= */
+
+function openConfirm(action) {
+  pendingAction = action;
+  document.getElementById("confirmPopup").style.display = "flex";
+  document.getElementById("confirmTitle").textContent =
+    action.type === "delete" ? "Delete appointment" : "Change status";
+  document.getElementById("confirmText").textContent =
+    action.type === "delete"
+      ? "Are you sure you want to delete this appointment?"
+      : `Change status to "${action.newStatus}"?`;
+}
+
+document.getElementById("cancelConfirmBtn").onclick = () => {
+  pendingAction = null;
+  document.getElementById("confirmPopup").style.display = "none";
+};
+
+document.getElementById("okConfirmBtn").onclick = () => {
+  if (!pendingAction) return;
+
+  if (pendingAction.type === "delete")
+    performDelete(pendingAction.timestamp);
+
+  if (pendingAction.type === "status")
+    performStatusUpdate(pendingAction.timestamp, pendingAction.newStatus);
+
+  document.getElementById("confirmPopup").style.display = "none";
+};
+
+/* =========================
+ACTIONS
+========================= */
+
+function performDelete(timestamp) {
+  fetch(`${API_BASE}/Timestamp/${encodeURIComponent(timestamp)}`, {
+    method: "DELETE"
+  }).then(() => {
+    allAppointments = allAppointments.filter(r => r.Timestamp !== timestamp);
+    renderTable();
+    notify("Appointment deleted");
+  });
+}
+
+function performStatusUpdate(timestamp, newStatus) {
+  fetch(`${API_BASE}/Timestamp/${encodeURIComponent(timestamp)}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ data: { Status: newStatus } })
+  }).then(() => {
+    allAppointments = allAppointments.map(r =>
+      r.Timestamp === timestamp ? { ...r, Status: newStatus } : r
+    );
+    renderTable();
+    notify(`Status changed to ${newStatus}`);
+  });
+}
+
+/* =========================
+REFRESH + EXPORT
+========================= */
+
+document.getElementById("refreshBtn").onclick = () => fetchAppointments();
+
+document.getElementById("exportCsvBtn").onclick = () => {
+  const selectedColumnsForExcel = [
+    "Date",
+    "Time",
+    "Name",
+    "Services",
+    "Phone",
+    "AttendedBy",
+    "Status"
+  ];
+
+  const filtered = getFilteredRows();
+
+  const headers = selectedColumnsForExcel;
+  const rows = filtered.map(row => {
+    const picked = pickColumns(row, selectedColumnsForExcel);
+    return headers
+      .map(h => `"${(picked[h] || "").toString().replace(/"/g, '""')}"`)
+      .join(",");
+  });
+
+  const csv = [headers.join(","), ...rows].join("\n");
+
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement("a");
+  a.href     = url;
+  a.download = "appointments_filtered.csv";
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
+document.getElementById("exportPdfBtn").onclick = () => {
+  const { jsPDF } = window.jspdf;
+
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4"
+  });
+
+  const selectedColumns = [
+    "Date",
+    "Time",
+    "Name",
+    "Services",
+    "Phone",
+    "AttendedBy",
+    "Status"
+  ];
+
+  const filtered = getFilteredRows();
+
+  const tableData = filtered.map(row => {
+    const picked = pickColumns(row, selectedColumns);
+    return picked;
+  });
+
+  doc.autoTable({
+    head: [selectedColumns],
+    body: tableData.map(r => [
+      r.Date || "",
+      r.Time || "",
+      r.Name || "",
+      r.Services || "",
+      r.Phone || "",
+      r.AttendedBy || "",
+      r.Status || ""
+    ]),
+    margin: { top: 25, bottom: 15 },
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [166, 124, 82] },
+
+    didDrawPage: function () {
+      const pageWidth  = doc.internal.pageSize.getWidth();
+      const pageHeight = doc.internal.pageSize.getHeight();
+
+      doc.setFontSize(16);
+      doc.setTextColor("#A67C52");
+      doc.text("JessMakeUP & Nails", pageWidth / 2, 12, { align: "center" });
+
+      const pageCount   = doc.internal.getNumberOfPages();
+      const pageCurrent = doc.internal.getCurrentPageInfo().pageNumber;
+
+      doc.setFontSize(10);
+      doc.setTextColor("#888888");
+      doc.text(
+        "An official product of ArthurNolimit",
+        pageWidth / 2,
+        pageHeight - 8,
+        { align: "center" }
+      );
+
+      doc.text(
+        `${pageCurrent} of ${pageCount}`,
+        pageWidth - 20,
+        pageHeight - 8
+      );
+    }
+  });
+
+  doc.save("appointments_filtered.pdf");
+};
+
+/* =========================
+INIT
+========================= */
+
+fetchAppointments();
+startAutoRefresh();
+</script>
+</body>
+</html>
+
