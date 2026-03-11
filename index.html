@@ -364,6 +364,124 @@
         grid-template-columns: 1fr;
       }
     }
+    .admin-access {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#adminDashboardBtn {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+#adminDashboardBtn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: rgba(166,124,82,0.06);
+}
+.btn-submit {
+  width: 100%;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 16px 20px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.btn-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.btn-submit:active {
+  transform: scale(0.97);
+}
+.site-footer {
+  text-align: center;
+  margin-top: 50px;
+  padding: 20px 10px;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.footer-main {
+  font-weight: 500;
+  letter-spacing: 0.04em;
+}
+
+.footer-sub {
+  margin-top: 4px;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+.brand {
+  color: var(--primary);
+  font-weight: 600;
+}
+
+.author {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+/* =========================
+FOOTER PREMIUM
+========================= */
+
+.site-footer {
+  margin-top: 60px;
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--text-muted);
+}
+
+.footer-divider {
+  width: 60px;
+  height: 2px;
+  background: var(--primary);
+  margin: 0 auto 18px auto;
+  opacity: 0.6;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.footer-brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--primary);
+  letter-spacing: 0.05em;
+}
+
+.footer-meta {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.footer-author {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  opacity: 0.6;
+}
+
+.footer-author span {
+  font-weight: 600;
+  color: var(--text-main);
+}
   </style>
 </head>
 <body>
@@ -376,56 +494,68 @@
       <div class="divider"></div>
     </div>
 
-    <div class="card">
-      <form id="bookingForm">
-        <div class="form-group">
-          <label for="name">Full name</label>
-          <input type="text" id="name" placeholder="Your name" required />
-        </div>
+   <div class="card">
 
-        <div class="form-group">
-          <label for="phone">WhatsApp number</label>
-          <div class="phone-input-group">
-            <span class="phone-prefix">+1</span>
-            <input
-              type="tel"
-              id="phone"
-              placeholder="5551234567"
-              pattern="[0-9]{10}"
-              maxlength="10"
-              inputmode="numeric"
-              required
-            />
-          </div>
-          <small class="field-help">Enter a valid 10-digit US number</small>
-        </div>
+  <form id="bookingForm">
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="your@email.com" required />
-        </div>
-
-        <div class="form-group">
-          <label>Select service</label>
-          <div id="services-container" class="services-container"></div>
-          <div id="selected-staff-info" class="selected-staff-info"></div>
-        </div>
-
-        <div class="form-group">
-          <label for="date">Preferred date</label>
-          <input type="date" id="date" required />
-        </div>
-
-        <div class="form-group">
-          <label>Preferred time</label>
-          <div id="time-buttons"></div>
-          <input type="hidden" id="time" required />
-        </div>
-
-        <button type="submit" class="btn-submit">Request appointment</button>
-      </form>
+    <div class="form-group">
+      <label for="name">Full name</label>
+      <input type="text" id="name" placeholder="Your name" required />
     </div>
+
+    <div class="form-group">
+      <label for="phone">WhatsApp number</label>
+      <div class="phone-input-group">
+        <span class="phone-prefix">+1</span>
+        <input
+          type="tel"
+          id="phone"
+          placeholder="5551234567"
+          pattern="[0-9]{10}"
+          maxlength="10"
+          inputmode="numeric"
+          required
+        />
+      </div>
+      <small class="field-help">Enter a valid 10-digit US number</small>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="your@email.com" required />
+    </div>
+
+    <div class="form-group">
+      <label>Select service</label>
+      <div id="services-container" class="services-container"></div>
+      <div id="selected-staff-info" class="selected-staff-info"></div>
+    </div>
+
+    <div class="form-group">
+      <label for="date">Preferred date</label>
+      <input type="date" id="date" required />
+    </div>
+
+    <div class="form-group">
+      <label>Preferred time</label>
+      <div id="time-buttons"></div>
+      <input type="hidden" id="time" required />
+    </div>
+
+    <button type="submit" class="btn-submit">
+      Request appointment
+    </button>
+
+  </form>
+
+  <!-- ADMIN BUTTON -->
+  <div class="admin-access">
+    <button id="adminDashboardBtn" type="button">
+      Admin Dashboard
+    </button>
   </div>
+
+</div>
 
   <div id="successPopup">
     <div class="popup-box">
@@ -434,15 +564,6 @@
       <button class="popup-btn" id="popupOkBtn">OK</button>
     </div>
   </div>
-
-  <footer class="site-footer">
-    <p>© <span id="year"></span> JessMakeUP & Nails · All rights reserved</p>
-    <p class="footer-credit">
-      An official
-      <a href="https://arthurnolimit.com" target="_blank" rel="noopener noreferrer">ArthurNoLimit</a>
-      Product
-    </p>
-  </footer>
 
   <script>
     const API_BASE = "https://sheetdb.io/api/v1/vjwpuzqkosor4";
@@ -818,5 +939,29 @@ Thank you!`
       document.getElementById("successPopup").style.display = "none";
     });
   </script>
+  <script>
+document.getElementById("adminDashboardBtn").onclick = () => {
+  window.open("https://macarthurjp.github.io/bookings/dashboard.html", "_blank");
+};
+</script>
+<footer class="site-footer">
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-content">
+    <div class="footer-brand">
+      JessMakeUP & Nails
+    </div>
+
+    <div class="footer-meta">
+      © 2026 · All rights reserved
+    </div>
+
+    <div class="footer-author">
+      Crafted by <span>ArthurNoLimit</span>
+    </div>
+  </div>
+
+</footer>
 </body>
 </html>
