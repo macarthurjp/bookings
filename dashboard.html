@@ -607,6 +607,91 @@ tr:has(.badge-rejected) td {
     padding: 7px 9px;
   }
 }
+.filters{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  align-items:flex-end;
+}
+
+.filter-group{
+  display:flex;
+  flex-direction:column;
+}
+
+.filter-group label{
+  font-size:12px;
+  margin-bottom:4px;
+  color:var(--text-muted);
+}
+
+.filter-group input,
+.filter-group select{
+  height:36px;
+  padding:6px 10px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  font-size:13px;
+}
+
+/* hacer la barra de búsqueda más larga */
+.search-group{
+  flex:1;
+  min-width:220px;
+}
+.filters-bar {
+  display: grid;
+  grid-template-columns: 180px 180px minmax(220px, 1fr);
+  gap: 14px;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.filter-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  letter-spacing: 0.02em;
+}
+
+.filter-group input,
+.filter-group select {
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font-size: 16px;
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.filter-group input::placeholder {
+  color: #b0b0b0;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+  border-color: rgba(166,124,82,0.5);
+  box-shadow: 0 0 0 4px rgba(166,124,82,0.08);
+}
+
+.filter-search input {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .filters-bar {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
 </style>
 </head>
 
@@ -639,28 +724,30 @@ tr:has(.badge-rejected) td {
       </div>
     </header>
 
-    <!-- Filters -->
-    <section class="card">
-      <div class="filters" style="display:flex;gap:12px;flex-wrap:wrap;">
-        <div>
-          <label>Date</label><br>
-          <input type="date" id="filterDate">
-        </div>
-        <div>
-          <label>Status</label><br>
-          <select id="filterStatus">
-            <option value="">All</option>
-            <option value="Approved">Approved</option>
-            <option value="Pending">Pending</option>
-            <option value="Rejected">Rejected</option>
-          </select>
-        </div>
-        <div>
-          <label>Search</label><br>
-          <input type="text" id="searchName" placeholder="Name, phone, email">
-        </div>
-      </div>
-    </section>
+<!-- Filters -->
+<section class="card">
+  <div class="filters-bar">
+    <div class="filter-group">
+      <label for="filterDate">Date</label>
+      <input type="date" id="filterDate">
+    </div>
+
+    <div class="filter-group">
+      <label for="filterStatus">Status</label>
+      <select id="filterStatus">
+        <option value="">All</option>
+        <option value="Approved">Approved</option>
+        <option value="Pending">Pending</option>
+        <option value="Rejected">Rejected</option>
+      </select>
+    </div>
+
+    <div class="filter-group filter-search">
+      <label for="searchName">Search</label>
+      <input type="text" id="searchName" placeholder="Name, phone, email">
+    </div>
+  </div>
+</section>
 
     <!-- Table -->
     <section class="card">
