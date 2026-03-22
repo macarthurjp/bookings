@@ -2,24 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Book Your Appointment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JessMakeUP & Nails</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
   <style>
     :root {
-      --bg: #faf8f5;
-      --card-bg: #ffffff;
-      --primary: #a67c52;
-      --border: #e0dad3;
-      --text-main: #3a3a3a;
-      --text-muted: #8a8a8a;
-      --blue-soft: #f4f8ff;
-      --blue-border: #d9e7ff;
-      --blue-strong: #0d6efd;
+      --bg: #FAF8F5;
+      --card-bg: #FFFFFF;
+      --primary: #A67C52;
+      --border: #E0DAD3;
+      --text-main: #3A3A3A;
+      --text-muted: #8A8A8A;
+      --danger: #C94B4B;
+      --success: #3BA776;
+      --shadow: 0 18px 40px rgba(0,0,0,0.06);
     }
 
     * {
@@ -28,13 +28,1042 @@
       padding: 0;
     }
 
-    html, body {
-      width: 100%;
-      min-height: 100%;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+      min-height: 100vh;
+      padding: 28px 14px;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-family: 'Playfair Display', serif;
+      font-size: 34px;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: 0.18em;
+    }
+
+    .divider {
+      width: 90px;
+      height: 2px;
+      background: rgba(166,124,82,0.25);
+      margin: 18px auto 0;
+      border-radius: 999px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="date"] {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 0 14px;
+      font-size: 16px;
+      background: #fff;
+      outline: none;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    input:focus {
+      border-color: rgba(166,124,82,0.55);
+      box-shadow: 0 0 0 4px rgba(166,124,82,0.08);
+    }
+
+    .field-help {
+      display: inline-block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .phone-input-group {
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .phone-input-group:focus-within {
+      border-color: rgba(166,124,82,0.55);
+      box-shadow: 0 0 0 4px rgba(166,124,82,0.08);
+    }
+
+    .phone-prefix {
+      min-width: 64px;
+      text-align: center;
+      font-weight: 600;
+      color: var(--text-main);
+      background: #f7f4f0;
+      border-right: 1px solid var(--border);
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-input-group input {
+      border: none;
+      border-radius: 0;
+      box-shadow: none !important;
+    }
+
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .service-card {
+      position: relative;
+    }
+
+    .service-card input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .service-card label {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 92px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+      cursor: pointer;
+      transition: all .18s ease;
+      justify-content: center;
+    }
+
+    .service-card input:checked + label {
+      border-color: rgba(166,124,82,0.55);
+      box-shadow: 0 10px 24px rgba(166,124,82,0.10);
+      transform: translateY(-1px);
+    }
+
+    .service-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--text-main);
+    }
+
+    .service-minutes {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .selected-staff-info,
+    .booking-info,
+    .status-box {
+      display: none;
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .selected-staff-info {
+      background: rgba(166,124,82,0.08);
+      color: var(--primary);
+    }
+
+    .booking-info {
+      background: rgba(59,167,118,0.08);
+      color: var(--success);
+    }
+
+    .status-box.info {
+      display: block;
+      background: rgba(75,123,201,0.08);
+      color: #4B7BC9;
+    }
+
+    .status-box.error {
+      display: block;
+      background: rgba(201,75,75,0.08);
+      color: var(--danger);
+    }
+
+    .status-box.success {
+      display: block;
+      background: rgba(59,167,118,0.08);
+      color: var(--success);
+    }
+
+    #time-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .time-btn {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all .18s ease;
+    }
+
+    .time-btn:hover {
+      transform: translateY(-1px);
+      border-color: rgba(166,124,82,0.55);
+    }
+
+    .time-btn.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 10px 20px rgba(166,124,82,0.18);
+    }
+
+    .btn-submit {
+      width: 100%;
+      min-height: 50px;
+      border: none;
+      border-radius: 16px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease, box-shadow .15s ease;
+      box-shadow: 0 12px 24px rgba(166,124,82,0.20);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .admin-access {
+      margin-top: 18px;
+      text-align: center;
+    }
+
+    .admin-access button {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    #successPopup {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 14px;
+    }
+
+    .popup-box {
+      background: #fff;
+      padding: 26px 24px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.14);
+    }
+
+    .popup-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .popup-text {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .popup-btn {
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 14px;
+      min-height: 44px;
+      min-width: 120px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .site-footer {
+      max-width: 760px;
+      margin: 26px auto 0;
+      text-align: center;
+      color: var(--text-muted);
+    }
+
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: rgba(166,124,82,0.18);
+      margin-bottom: 18px;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .footer-brand {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .footer-author span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 18px 10px;
+      }
+
+      .logo {
+        font-size: 24px;
+      }
+
+      .title {
+        font-size: 28px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .services-container {
+        grid-template-columns: 1fr;
+      }
+
+      .service-card label {
+        min-height: 84px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+    <div class="header">
+      <div class="logo">JESSMAKEUP & NAILS</div>
+      <div class="title">Book Your Appointment</div>
+      <div class="subtitle">MANICURE • PEDICURE • SELF-CARE</div>
+      <div class="divider"></div>
+    </div>
+
+    <div class="card">
+      <form id="bookingForm">
+
+        <div class="form-group">
+          <label for="name">Full name</label>
+          <input type="text" id="name" placeholder="Your name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="phone">WhatsApp number</label>
+          <div class="phone-input-group">
+            <span class="phone-prefix">+1</span>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="5551234567"
+              pattern="[0-9]{10}"
+              maxlength="10"
+              inputmode="numeric"
+              required
+            />
+          </div>
+          <small class="field-help">Enter a valid 10-digit US number</small>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="your@email.com" required />
+        </div>
+
+        <div class="form-group">
+          <label>Select service</label>
+          <div id="services-container" class="services-container"></div>
+          <div id="selected-staff-info" class="selected-staff-info"></div>
+          <div id="booking-info" class="booking-info"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Preferred date</label>
+          <input type="date" id="date" required />
+        </div>
+
+        <div class="form-group">
+          <label>Preferred time</label>
+          <div id="time-buttons"></div>
+          <input type="hidden" id="time" required />
+        </div>
+
+        <div id="statusBox" class="status-box"></div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">
+          Request appointment
+        </button>
+
+      </form>
+
+      <div class="admin-access">
+        <button id="adminDashboardBtn" type="button">
+          Admin Dashboard
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="successPopup">
+    <div class="popup-box">
+      <div class="popup-title">✨ Appointment Received</div>
+      <div class="popup-text">Your appointment request has been received successfully.</div>
+      <button class="popup-btn" id="popupOkBtn">OK</button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-divider"></div>
+
+    <div class="footer-content">
+      <div class="footer-brand">
+        JessMakeUP & Nails
+      </div>
+
+      <div class="footer-meta">
+        © <span id="year"></span> · All rights reserved
+      </div>
+
+      <div class="footer-author">
+        Crafted by <span>ArthurNoLimit</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const API_BASE = "https://script.google.com/macros/s/AKfycby3EBeEjLURLtad9VXPWG4QvAQFiVP47J7Rsz-j11Og4hVXRelWKsetV3LwX07cPOQYFA/exec";
+    const BUSINESS_WHATSAPP = "19738735088";
+    const DASHBOARD_URL = "https://macarthurjp.github.io/bookings/dashboard.html";
+
+    let META = {
+      allowedTimes: [],
+      durations: {},
+      settingsConfig: {}
+    };
+
+    let HOLIDAYS = [];
+    let isSubmitting = false;
+
+    const servicesContainer = document.getElementById("services-container");
+    const timeButtonsContainer = document.getElementById("time-buttons");
+    const timeInput = document.getElementById("time");
+    const dateInput = document.getElementById("date");
+    const submitBtn = document.getElementById("submitBtn");
+    const selectedStaffInfo = document.getElementById("selected-staff-info");
+    const bookingInfo = document.getElementById("booking-info");
+    const statusBox = document.getElementById("statusBox");
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      try {
+        await loadMeta();
+        renderServices();
+        setupDateInput();
+      } catch (error) {
+        console.error("Init error:", error);
+        showStatus("Could not load booking settings. Please refresh the page.", "error");
+      }
+    });
+
+    async function loadMeta() {
+      const res = await fetch(`${API_BASE}?action=meta`);
+      const json = await res.json();
+
+      if (!json.success) {
+        throw new Error(json.error || "Could not load meta");
+      }
+
+      META = json.data || {
+        allowedTimes: [],
+        durations: {},
+        settingsConfig: {}
+      };
+
+      const rawHolidays = META.settingsConfig?.Holidays || "";
+      HOLIDAYS = rawHolidays
+        .split(",")
+        .map(d => d.trim())
+        .filter(Boolean);
+    }
+
+    function normalizeKey(text) {
+      return (text || "")
+        .toString()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function getDurationsArray() {
+      return Object.values(META.durations || {}).sort((a, b) =>
+        (a.service || "").localeCompare(b.service || "")
+      );
+    }
+
+    function renderServices() {
+      servicesContainer.innerHTML = "";
+
+      const services = getDurationsArray();
+
+      services.forEach((s, index) => {
+        const serviceId = `service-${index}`;
+        const minutes = parseInt(s.minutes, 10) || 0;
+        const staff = (s.staff || "").trim();
+
+        const card = document.createElement("div");
+        card.className = "service-card";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = serviceId;
+        checkbox.value = s.service;
+        checkbox.dataset.staff = staff;
+        checkbox.dataset.minutes = minutes;
+
+        checkbox.addEventListener("change", () => {
+          clearStatus();
+
+          const valid = validateSelectedServicesStaff();
+          if (!valid) {
+            updateSelectedStaffInfo();
+            updateBookingInfo();
+            timeButtonsContainer.innerHTML = "<p>Please select services from the same professional.</p>";
+            timeInput.value = "";
+            return;
+          }
+
+          updateSelectedStaffInfo();
+          updateBookingInfo();
+          renderTimeButtons();
+        });
+
+        const label = document.createElement("label");
+        label.setAttribute("for", serviceId);
+
+        const nameSpan = document.createElement("span");
+        nameSpan.className = "service-name";
+        nameSpan.textContent = s.service;
+
+        const minutesSpan = document.createElement("span");
+        minutesSpan.className = "service-minutes";
+        minutesSpan.textContent = `${minutes} min${staff ? ` · ${staff}` : ""}`;
+
+        label.appendChild(nameSpan);
+        label.appendChild(minutesSpan);
+
+        card.appendChild(checkbox);
+        card.appendChild(label);
+        servicesContainer.appendChild(card);
+      });
+    }
+
+    function setupDateInput() {
+      if (typeof flatpickr === "function") {
+        flatpickr("#date", {
+          minDate: "today",
+          disable: [...HOLIDAYS],
+          dateFormat: "Y-m-d",
+          onChange: function(selectedDates, dateStr) {
+            clearStatus();
+
+            if (HOLIDAYS.includes(dateStr)) {
+              showStatus("This day is unavailable. Please select another date.", "error");
+              dateInput.value = "";
+              return;
+            }
+
+            renderTimeButtons();
+          }
+        });
+      } else {
+        dateInput.min = new Date().toISOString().split("T")[0];
+        dateInput.addEventListener("change", () => {
+          clearStatus();
+
+          if (HOLIDAYS.includes(dateInput.value)) {
+            showStatus("This day is unavailable. Please select another date.", "error");
+            dateInput.value = "";
+            return;
+          }
+
+          renderTimeButtons();
+        });
+      }
+    }
+
+    function getSelectedServices() {
+      return [...document.querySelectorAll("#services-container input:checked")];
+    }
+
+    function getSelectedServicesText() {
+      return getSelectedServices().map(s => s.value).join(", ");
+    }
+
+    function getSelectedStaff() {
+      const selectedServices = getSelectedServices();
+
+      const uniqueStaff = [
+        ...new Set(
+          selectedServices
+            .map(input => (input.dataset.staff || "").trim())
+            .filter(Boolean)
+        )
+      ];
+
+      return uniqueStaff.length === 1 ? uniqueStaff[0] : "";
+    }
+
+    function validateSelectedServicesStaff() {
+      const selectedServices = getSelectedServices();
+      if (!selectedServices.length) return true;
+
+      const uniqueStaff = [
+        ...new Set(
+          selectedServices
+            .map(input => (input.dataset.staff || "").trim())
+            .filter(Boolean)
+        )
+      ];
+
+      if (uniqueStaff.length > 1) {
+        const checkedInputs = getSelectedServices();
+        const lastChecked = checkedInputs[checkedInputs.length - 1];
+
+        if (lastChecked) {
+          lastChecked.checked = false;
+        }
+
+        showStatus("Selected services must belong to the same professional.", "error");
+        return false;
+      }
+
+      return true;
+    }
+
+    function getTotalMinutes() {
+      return getSelectedServices().reduce((sum, s) => {
+        return sum + (parseInt(s.dataset.minutes, 10) || 0);
+      }, 0);
+    }
+
+    function updateSelectedStaffInfo() {
+      const staff = getSelectedStaff();
+
+      if (!staff) {
+        selectedStaffInfo.style.display = "none";
+        selectedStaffInfo.textContent = "";
+        return;
+      }
+
+      selectedStaffInfo.style.display = "block";
+      selectedStaffInfo.textContent = `You will be attended by: ${staff}`;
+    }
+
+    function updateBookingInfo() {
+      const totalMinutes = getTotalMinutes();
+      const selectedServices = getSelectedServices();
+
+      if (!selectedServices.length || !totalMinutes) {
+        bookingInfo.style.display = "none";
+        bookingInfo.textContent = "";
+        return;
+      }
+
+      bookingInfo.style.display = "block";
+      bookingInfo.textContent = `Estimated duration: ${totalMinutes} min`;
+    }
+
+    function timeToMinutes(time) {
+      const [h, m] = time.split(":").map(Number);
+      return h * 60 + m;
+    }
+
+    function minutesToTime(totalMinutes) {
+      const h = Math.floor(totalMinutes / 60) % 24;
+      const m = totalMinutes % 60;
+      return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`;
+    }
+
+    function crossesLunch(start, end) {
+      const lunchStart = META.settingsConfig?.LunchStart || "";
+      const lunchEnd = META.settingsConfig?.LunchEnd || "";
+
+      if (!lunchStart || !lunchEnd) return false;
+
+      const a1 = timeToMinutes(start);
+      const a2 = timeToMinutes(end);
+      const b1 = timeToMinutes(lunchStart);
+      const b2 = timeToMinutes(lunchEnd);
+
+      return a1 < b2 && a2 > b1;
+    }
+
+    function generateSlots() {
+      return [...(META.allowedTimes || [])];
+    }
+
+    async function getAppointmentsForDate(date) {
+      const res = await fetch(`${API_BASE}?action=list`);
+      const json = await res.json();
+
+      if (!json.success) {
+        throw new Error(json.error || "Could not load appointments");
+      }
+
+      return (json.data || []).filter(a => a.Date === date);
+    }
+
+    async function renderTimeButtons() {
+      const date = dateInput.value;
+
+      timeButtonsContainer.innerHTML = "";
+      timeInput.value = "";
+
+      if (!date) return;
+
+      const selectedServices = getSelectedServices();
+
+      if (!selectedServices.length) {
+        timeButtonsContainer.innerHTML = "<p>Select a service first.</p>";
+        return;
+      }
+
+      if (!validateSelectedServicesStaff()) {
+        timeButtonsContainer.innerHTML = "<p>Please select services from the same professional.</p>";
+        return;
+      }
+
+      const selectedStaff = getSelectedStaff();
+
+      if (!selectedStaff) {
+        timeButtonsContainer.innerHTML = "<p>This service does not have an assigned professional.</p>";
+        return;
+      }
+
+      let appointments = [];
+      try {
+        appointments = await getAppointmentsForDate(date);
+      } catch (error) {
+        console.error("Appointments load error:", error);
+        timeButtonsContainer.innerHTML = "<p>Could not load available times.</p>";
+        return;
+      }
+
+      const totalMinutes = getTotalMinutes();
+      const allTimes = generateSlots();
+
+      const now = new Date();
+      const todayStr = now.toISOString().split("T")[0];
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+
+      allTimes.forEach(time => {
+        const startTotal = timeToMinutes(time);
+        const endTotal = startTotal + totalMinutes;
+        const endText = minutesToTime(endTotal);
+
+        if (date === todayStr && startTotal <= currentMinutes) return;
+        if (crossesLunch(time, endText)) return;
+
+        const conflicting = appointments.some(a => {
+          const status = (a.Status || "").toString().trim().toLowerCase();
+          if (status === "rejected") return false;
+
+          const sameStaff = ((a.AttendedBy || "").trim() === selectedStaff);
+          if (!sameStaff) return false;
+
+          const rowStart = a.Start;
+          const rowEnd = a.End;
+          if (!rowStart || !rowEnd || rowEnd === "N/A") return false;
+
+          const rowStartMin = timeToMinutes(rowStart);
+          const rowEndMin = timeToMinutes(rowEnd);
+
+          return startTotal < rowEndMin && endTotal > rowStartMin;
+        });
+
+        if (conflicting) return;
+
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "time-btn";
+        btn.dataset.time = time;
+        btn.textContent = `${time} - ${endText}`;
+
+        btn.addEventListener("click", () => {
+          document.querySelectorAll(".time-btn.selected").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+          timeInput.value = time;
+          clearStatus();
+        });
+
+        timeButtonsContainer.appendChild(btn);
+      });
+
+      if (timeButtonsContainer.children.length === 0) {
+        timeButtonsContainer.innerHTML = "<p>No times available.</p>";
+      }
+    }
+
+    function showStatus(message, type = "info") {
+      statusBox.className = `status-box ${type}`;
+      statusBox.textContent = message;
+    }
+
+    function clearStatus() {
+      statusBox.className = "status-box";
+      statusBox.textContent = "";
+    }
+
+    function resetFormCompletely() {
+      document.getElementById("bookingForm").reset();
+      document.querySelectorAll("#services-container input:checked").forEach(i => i.checked = false);
+      document.querySelectorAll(".time-btn.selected").forEach(b => b.classList.remove("selected"));
+      timeButtonsContainer.innerHTML = "";
+      timeInput.value = "";
+      selectedStaffInfo.style.display = "none";
+      selectedStaffInfo.textContent = "";
+      bookingInfo.style.display = "none";
+      bookingInfo.textContent = "";
+      clearStatus();
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      if (isSubmitting) return;
+
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const date = dateInput.value;
+      const start = timeInput.value;
+      const cleanPhone = phone.replace(/\D/g, "");
+
+      if (cleanPhone.length !== 10) {
+        showStatus("Please enter a valid US phone number.", "error");
+        return;
+      }
+
+      if (!date) {
+        showStatus("Please select a date.", "error");
+        return;
+      }
+
+      if (!start) {
+        showStatus("Please select a time.", "error");
+        return;
+      }
+
+      const selectedServices = getSelectedServices();
+
+      if (!selectedServices.length) {
+        showStatus("Please select a service.", "error");
+        return;
+      }
+
+      if (!validateSelectedServicesStaff()) {
+        return;
+      }
+
+      const staff = getSelectedStaff();
+
+      if (!staff) {
+        showStatus("This service does not have an assigned professional.", "error");
+        return;
+      }
+
+      const servicesText = getSelectedServicesText();
+      const totalMinutes = getTotalMinutes();
+      const end = minutesToTime(timeToMinutes(start) + totalMinutes);
+
+      isSubmitting = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+      showStatus("Checking availability...", "info");
+
+      try {
+        const checkBody = new URLSearchParams({
+          action: "checkAvailability",
+          name,
+          email,
+          phone: cleanPhone,
+          date,
+          start,
+          services: servicesText,
+          status: "Pending"
+        });
+
+        const checkRes = await fetch(API_BASE, {
+          method: "POST",
+          body: checkBody
+        });
+
+        const checkJson = await checkRes.json();
+
+        if (!checkJson.success || !checkJson.available) {
+          showStatus(checkJson.error || "This time is no longer available.", "error");
+          await renderTimeButtons();
+          return;
+        }
+
+        showStatus("Creating appointment...", "info");
+
+        const createBody = new URLSearchParams({
+          action: "createAppointment",
+          name,
+          email,
+          phone: cleanPhone,
+          date,
+          start,
+          services: servicesText,
+          status: "Pending"
+        });
+
+        const createRes = await fetch(API_BASE, {
+          method: "POST",
+          body: createBody
+        });
+
+        const createJson = await createRes.json();
+
+        if (!createJson.success) {
+          throw new Error(createJson.error || "Could not create appointment");
+        }
+
+        document.getElementById("successPopup").style.display = "flex";
+        clearStatus();
+
+        const msg = encodeURIComponent(
+`Hello JessMakeUP!
+
+Appointment request:
+Name: ${name}
+Customer phone: +1${cleanPhone}
+Email: ${email}
+Professional: ${staff}
+Date: ${date}
+Time: ${start} - ${end}
+Services: ${servicesText}
+
+Thank you!`
+        );
+
+        setTimeout(() => {
+          window.location.href = `https://wa.me/${BUSINESS_WHATSAPP}?text=${msg}`;
+        }, 700);
+
+      } catch (error) {
+        console.error("Submit error:", error);
+        showStatus(error.message || "There was an error sending your appointment.", "error");
+      } finally {
+        isSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Request appointment";
+      }
+    });
+
+    document.getElementById("popupOkBtn").addEventListener("click", () => {
+      document.getElementById("successPopup").style.display = "none";
+      resetFormCompletely();
+    });
+
+    document.getElementById("successPopup").addEventListener("click", (e) => {
+      if (e.target.id === "successPopup") {
+        document.getElementById("successPopup").style.display = "none";
+        resetFormCompletely();
+      }
+    });
+
+    document.getElementById("adminDashboardBtn").onclick = () => {
+      window.open(DASHBOARD_URL, "_blank");
+    };
+  </script>
+</body>
+</html>      font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text-main);
       min-height: 100vh;
